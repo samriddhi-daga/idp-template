@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: test-gitx-for-branch-temp
+  name: testgitxforbranchtemp
   title: Test gitx for branch temp Backstage
   tags:
     - mqtt
