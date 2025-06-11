@@ -1,0 +1,14 @@
+apiVersion: harness.io/v1
+kind: Component
+type: website
+identifier: test_gitx_for_branch_temp
+name: Test gitx for branch temp
+owner: user:account/admin@harness.io
+spec:
+  lifecycle: production
+  ownedBy:
+  - user:account/admin@harness.io
+metadata:
+  tags:
+  - mqtt
+  - authentication
