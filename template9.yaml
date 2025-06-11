@@ -1,0 +1,16 @@
+apiVersion: harness.io/v1
+kind: Component
+type: website
+identifier: test_gitx_for_project
+name: Test Gitx for Project
+owner: user:account/admin@harness.io
+orgIdentifier: Demo
+projectIdentifier: projectdemo
+spec:
+  lifecycle: experimental
+  ownedBy:
+  - user:account/admin@harness.io
+metadata:
+  tags:
+  - rest
+  - users
