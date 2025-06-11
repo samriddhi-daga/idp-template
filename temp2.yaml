@@ -1,0 +1,16 @@
+apiVersion: harness.io/v1
+kind: Component
+type: component
+identifier: test_gitx_from_temp_branch
+name: Test gitx from temp branch
+owner: group:account/_account_all_users
+orgIdentifier: Demo
+projectIdentifier: projectdemo
+spec:
+  lifecycle: experimental
+  ownedBy:
+  - group:account/_account_all_users
+metadata:
+  tags:
+  - rest
+  - mqtt
