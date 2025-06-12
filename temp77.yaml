@@ -12,3 +12,5 @@ metadata:
   description: Test description
   tags:
   - rest
+  - mqtt
+  - authentication
