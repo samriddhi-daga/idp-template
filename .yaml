@@ -2,7 +2,7 @@ apiVersion: harness.io/v1
 kind: Component
 type: service
 identifier: harjastest
-name: harjas-test
+name: harjas-test-2
 owner: user:account/harjas.bathla@harness.io
 spec:
   lifecycle: experimental
