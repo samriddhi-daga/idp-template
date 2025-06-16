@@ -1,0 +1,10 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: test_entity_for_bug_bash
+name: Test Entity for bug bash
+owner: user:account/samriddhi.daga@harness.io
+spec:
+  lifecycle: production
+  ownedBy:
+  - user:account/samriddhi.daga@harness.io
