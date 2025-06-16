@@ -1,0 +1,16 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: test_new_import
+name: Test New Import
+owner: user:samriddhi.daga@harness.io
+spec:
+  lifecycle: experimental
+  ownedBy:
+  - user:samriddhi.daga@harness.io
+metadata:
+  description: Test description
+  tags:
+  - rest
+  - mqtt
+  - authentication
