@@ -8,3 +8,5 @@ spec:
   lifecycle: production
   ownedBy:
   - user:account/samriddhi.daga@harness.io
+metadata:
+  description: Test description
