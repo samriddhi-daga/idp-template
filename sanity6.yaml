@@ -1,0 +1,17 @@
+apiVersion: harness.io/v1
+kind: Resource
+type: service
+identifier: test_sanity_resource_six
+name: Test Sanity Resource Six
+owner: user:account/samriddhi.daga@harness.io
+orgIdentifier: default
+projectIdentifier: idptest
+spec:
+  lifecycle: experimental-github
+  ownedBy:
+  - user:account/samriddhi.daga@harness.io
+metadata:
+  tags:
+  - java
+  - java.t
+  - my-sample-github
