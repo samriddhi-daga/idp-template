@@ -1,0 +1,15 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: test_webhook
+name: Test Webhook
+owner: user:account/samriddhi.daga+rbac@harness.io
+spec:
+  lifecycle: production
+  ownedBy:
+  - group:account/_account_all_users
+  - user:account/samriddhi.daga+rbac@harness.io
+metadata:
+  tags:
+  - rest
+  - java
