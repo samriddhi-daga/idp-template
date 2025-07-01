@@ -1,0 +1,15 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: test_component
+name: Test Component
+owner: user:account/samriddhi.daga@harness.io
+orgIdentifier: IDP_SAAS
+projectIdentifier: IDPSAASTEST
+spec:
+  lifecycle: production
+  ownedBy:
+  - user:account/samriddhi.daga@harness.io
+metadata:
+  tags:
+  - users
