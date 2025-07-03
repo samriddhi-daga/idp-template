@@ -1,0 +1,17 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: prod_component_sanity
+name: Prod Component Sanity
+owner: user:account/samriddhi.daga@harness.io
+orgIdentifier: default
+projectIdentifier: IDP_UI
+spec:
+  lifecycle: production
+  ownedBy:
+  - user:account/samriddhi.daga@harness.io
+metadata:
+  tags:
+  - go
+  - python
+  - typescript
