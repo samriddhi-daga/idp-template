@@ -1,0 +1,17 @@
+apiVersion: harness.io/v1
+kind: Component
+type: library
+identifier: test_component_fallback_branch
+name: Test Component Fallback branch
+owner: user:account/samriddhi.daga+rbac@harness.io
+orgIdentifier: default
+projectIdentifier: idptest
+spec:
+  lifecycle: experimental-github
+  ownedBy:
+  - group:account/_account_all_users
+  - user:account/samriddhi.daga+rbac@harness.io
+metadata:
+  tags:
+  - my-sample-github
+  - gitsync
