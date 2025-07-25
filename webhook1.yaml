@@ -2,7 +2,7 @@ apiVersion: harness.io/v1
 kind: Component
 type: service
 identifier: test_webhook
-name: Test Webhook Demo
+name: Test Webhook Demo Test
 description: test test
 owner: user:account/samriddhi.daga+rbac@harness.io
 spec:
