@@ -3,6 +3,7 @@ kind: Component
 type: service
 identifier: test_webhook
 name: Test Webhook Demo
+description: test test
 owner: user:account/samriddhi.daga+rbac@harness.io
 spec:
   lifecycle: production
