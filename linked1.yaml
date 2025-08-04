@@ -18,6 +18,8 @@ spec:
   ownedBy:
   - group:account/AAAFF
 metadata:
+  annotations:
+    github.com/project-slug: samriddhi-daga/idp-template
   tags:
   - store
   - rest
