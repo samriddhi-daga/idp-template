@@ -1,0 +1,23 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: source_linking_bugbash
+name: Source linking - bugbash
+owner: user:account/samriddhi.daga@harness.io
+spec:
+  lifecycle: production
+  sourceCode:
+    branch: main
+    monoRepo: false
+    isHarnessCodeRepo: false
+    provider: Github
+    repoName: idp-template
+    connectorRef: account.Samriddhi_repo
+    monoReposubDirectoryPath: ''
+    url: https://github.com/samriddhi-daga/idp-template
+  ownedBy:
+  - group:account/AAAFF
+metadata:
+  tags:
+  - store
+  - rest
