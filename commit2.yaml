@@ -1,0 +1,50 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: accesscontrol-service
+name: accesscontrol-service
+owner: plplayacc
+spec:
+  lifecycle: production
+metadata:
+  annotation:
+    datadoghq:
+      com/dashboard-url: 'null'
+  description: Access control backend service
+  annotations:
+    harness.io/cd-serviceId: accesscontrol
+    backstage.io/kubernetes-label-selector: app=accesscontrol-service
+    harness.io/ci-pipelineIds: Branching_AND_Release
+    harness.io/projects: DevSpaces
+    harness.io/project-url: https://app.harness.io/ng/account/vpCkHKsDSxK9_KYfjCTMKA/all/orgs/default/projects/DevSpaces/pipelines/Branching_AND_Release
+    harness.io/project-url-stage: https://stage.harness.io/ng/account/wFHXHD0RRQWoO8tIZT5YVw/cd/orgs/Harness/projects/Operations/deployments
+    harness.io/projects-stage: Operations,RELEASEBUILDS
+    harness.io/cd-serviceId-stage: accesscontrol
+    jira/project-key: PL
+    jira/component: access-management
+    backstage.io/techdocs-ref: url:https://github.com/harness/harness-core/tree/techdocs-pl/access-control
+    pagerduty.com/service-id: PLNZG2Y
+    github.com/project-slug: harness/harness-core
+    backstage.io/source-location: url:https://github.com/harness/harness-core/tree/develop/access-control
+  links:
+  - title: repo
+    url: https://github.com/harness/harness-core
+  - title: Document reference for Access-control
+    url: https://developer.harness.io/docs/category/access-control-2/
+  - title: QA kubernetes GCP Reference
+    url: https://console.cloud.google.com/kubernetes/deployment/us-west1/qa-private/harness-nextgen/accesscontrol-service/overview?project=qa-setup
+  - title: PROD1 kubernetes GCP Reference
+    url: https://console.cloud.google.com/kubernetes/deployment/us-west1/prod-private-uswest1-primary/harness-nextgen/accesscontrol-service/overview?project=prod-setup-205416
+  - title: PROD2 kubernetes GCP Reference
+    url: https://console.cloud.google.com/kubernetes/deployment/us-west1/prod-private-uswest1-primary/harness-nextgen-free/accesscontrol-service/overview?project=prod-setup-205416
+  - title: UAT kubernetes GCP Reference
+    url: https://console.cloud.google.com/kubernetes/deployment/us-central1-a/uat-private/harness-nextgen/accesscontrol-service/overview?project=uat-setup-261723
+  - title: PROD3 kubernetes GCP Reference
+    url: https://console.cloud.google.com/kubernetes/deployment/us-west1/prod-private-uswest1-primary/harness-nextgen-compliance/accesscontrol-service/overview?project=prod-setup-205416
+  - title: Platform Owned Service Release Calendar
+    url: https://harness.atlassian.net/wiki/spaces/PLATFORM/pages/21693792411/Platform+Owned+Service+Release+Calendar+2024
+  harnessData:
+    qa_version: '1.70'
+    prod_version: '1.69'
+  tags:
+  - java
