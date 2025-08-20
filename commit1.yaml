@@ -1,0 +1,3441 @@
+apiVersion: harness.io/v1
+kind: API
+type: openapi
+identifier: accesscontrol-service
+name: accesscontrol-service
+owner: group:account/plplayacc
+spec:
+  lifecycle: production
+  partOf:
+  - system:account/demo_system
+  apiProvidedBy:
+  - component:user-service
+  system:
+  - system:account/demo_system
+  - system:account/remote_system
+  dependsOn: []
+  definition: |-
+    {
+      "openapi" : "3.0.1",
+      "info" : {
+        "title" : "Access Control API Reference",
+        "description" : "This is the Open Api Spec 3 for the Access Control Service. This is under active development. Beware of the breaking change with respect to the generated code stub",
+        "termsOfService" : "https://harness.io/terms-of-use/",
+        "contact" : {
+          "email" : "contact@harness.io"
+        },
+        "version" : "1.0"
+      },
+      "servers" : [ {
+        "url" : "https://access-control-86b89d4d89-p7lfj/gateway/authz/api"
+      } ],
+      "tags" : [ {
+        "name" : "Access Control List",
+        "description" : "This contains the APIs to perform access control checks"
+      }, {
+        "name" : "Permissions",
+        "description" : "This contains the APIs related to permissions"
+      }, {
+        "name" : "Role Assignments",
+        "description" : "This contains APIs for CRUD on role assignments"
+      }, {
+        "name" : "Roles",
+        "description" : "This contains APIs for CRUD on roles"
+      } ],
+      "paths" : {
+        "/acl" : {
+          "post" : {
+            "tags" : [ "Access Control List" ],
+            "summary" : "Check Permission",
+            "description" : "Check for permission on resource(s) for a principal",
+            "operationId" : "getAccessControlList",
+            "requestBody" : {
+              "description" : "These are the checks to perform for Access Control.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/AccessCheckRequest"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/AccessCheckRequest"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Result of the access check request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOAccessCheckResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOAccessCheckResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/permissions" : {
+          "get" : {
+            "tags" : [ "Permissions" ],
+            "summary" : "List Permissions",
+            "description" : "Get all permissions in a scope or all permissions in the system",
+            "operationId" : "getPermissionList",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "scopeFilterDisabled",
+              "in" : "query",
+              "description" : "This is to enable or disable filtering by scope. The default value is false. If the value is true, all the permissions in the system are fetched.",
+              "schema" : {
+                "type" : "boolean"
+              }
+            } ],
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "List of all permissions",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOListPermissionResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOListPermissionResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/permissions/resourcetypes" : {
+          "get" : {
+            "tags" : [ "Permissions" ],
+            "summary" : "List Resource Types",
+            "description" : "Get all resource types for permissions in a scope or in the system.",
+            "operationId" : "getPermissionResourceTypesList",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "scopeFilterDisabled",
+              "in" : "query",
+              "description" : "This is to enable or disable filtering by scope. The default value is false. If the value is true, all the permissions in the system are fetched.",
+              "schema" : {
+                "type" : "boolean"
+              }
+            } ],
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "List of resource types",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOSetString"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOSetString"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roleassignments/delete/batch" : {
+          "post" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "Bulk Delete Role Assignment",
+            "description" : "Bulk delete role assignments by identifiers",
+            "operationId" : "bulkDeleteRoleAssignment",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "description" : "List of role assigment identifiers to be deleted",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "maxItems" : 100,
+                    "minItems" : 0,
+                    "uniqueItems" : true,
+                    "type" : "array",
+                    "items" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "maxItems" : 100,
+                    "minItems" : 0,
+                    "uniqueItems" : true,
+                    "type" : "array",
+                    "items" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Returns successfully/failed deleted roleassignment.",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentDeleteResponseDTO"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentDeleteResponseDTO"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roleassignments/multi" : {
+          "post" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "Create Role Assignments",
+            "description" : "Create multiple role assignments in a scope. Returns all successfully created role assignments. Ignores failures and duplicates.",
+            "operationId" : "postRoleAssignments",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "description" : "List of role assignments to create",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentCreateRequest"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentCreateRequest"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Successfully created role assignments",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOListRoleAssignmentResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOListRoleAssignmentResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roleassignments" : {
+          "get" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "List Role Assignments",
+            "description" : "List role assignments in the given scope",
+            "operationId" : "getRoleAssignmentList",
+            "parameters" : [ {
+              "name" : "pageIndex",
+              "in" : "query",
+              "description" : "Page Index of the results to fetch.Default Value: 0",
+              "schema" : {
+                "type" : "integer",
+                "format" : "int32",
+                "default" : 0
+              }
+            }, {
+              "name" : "pageSize",
+              "in" : "query",
+              "description" : "Results per page(max 100)Default Value: 50",
+              "schema" : {
+                "maximum" : 100,
+                "type" : "integer",
+                "format" : "int32",
+                "default" : 50
+              }
+            }, {
+              "name" : "sortOrders",
+              "in" : "query",
+              "description" : "Sort criteria for the elements.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/SortOrder"
+                }
+              }
+            }, {
+              "name" : "pageToken",
+              "in" : "query",
+              "description" : "Page Token of the next results to fetch.Default Value: ''",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Paginated list of role assignments in the given scope",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOPageResponseRoleAssignmentResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOPageResponseRoleAssignmentResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "post" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "Create Role Assignment",
+            "description" : "Creates role assignment within the specified scope.",
+            "operationId" : "postRoleAssignment",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "description" : "These are details for the role assignment to create.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignment"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignment"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "These are details of the created role assignment.",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roleassignments/{identifier}" : {
+          "get" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "Get Role Assignment",
+            "description" : "Get an existing role assignment by identifier",
+            "operationId" : "getRoleAssignment",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "identifier",
+              "in" : "path",
+              "description" : "Identifier for role assignment",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Get an existing role assignment by identifier in the given scope",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "delete" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "Delete Role Assignment",
+            "description" : "Delete an existing role assignment by identifier",
+            "operationId" : "deleteRoleAssignment",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "identifier",
+              "in" : "path",
+              "description" : "Identifier for role assignment",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Deleted role assignment",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roleassignments/filter" : {
+          "post" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "List Role Assignments by filter",
+            "description" : "List role assignments in the scope according to the given filter",
+            "operationId" : "getFilteredRoleAssignmentList",
+            "parameters" : [ {
+              "name" : "pageIndex",
+              "in" : "query",
+              "description" : "Page Index of the results to fetch.Default Value: 0",
+              "schema" : {
+                "type" : "integer",
+                "format" : "int32",
+                "default" : 0
+              }
+            }, {
+              "name" : "pageSize",
+              "in" : "query",
+              "description" : "Results per page(max 100)Default Value: 50",
+              "schema" : {
+                "maximum" : 100,
+                "type" : "integer",
+                "format" : "int32",
+                "default" : 50
+              }
+            }, {
+              "name" : "sortOrders",
+              "in" : "query",
+              "description" : "Sort criteria for the elements.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/SortOrder"
+                }
+              }
+            }, {
+              "name" : "pageToken",
+              "in" : "query",
+              "description" : "Page Token of the next results to fetch.Default Value: ''",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "description" : "Filter role assignments based on multiple parameters.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentFilter"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentFilter"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Paginated list of role assignments in the scope according to the given filter",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOPageResponseRoleAssignmentResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOPageResponseRoleAssignmentResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roleassignments/aggregate" : {
+          "post" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "List Aggregated Role Assignments by filter",
+            "description" : "List role assignments in the scope according to the given filter with added metadata",
+            "operationId" : "getRoleAssignmentAggregateList",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "description" : "Filter role assignments based on multiple parameters.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentFilter"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentFilter"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Paginated list of role assignments in the scope according to the given filter with added metadata.",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentAggregateResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentAggregateResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roleassignments/v2/filter" : {
+          "post" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "List Role Assignments by scope filter",
+            "description" : "List role assignments in the scope according to the given filter",
+            "operationId" : "getFilteredRoleAssignmentByScopeList",
+            "parameters" : [ {
+              "name" : "pageIndex",
+              "in" : "query",
+              "description" : "Page Index of the results to fetch.Default Value: 0",
+              "schema" : {
+                "type" : "integer",
+                "format" : "int32",
+                "default" : 0
+              }
+            }, {
+              "name" : "pageSize",
+              "in" : "query",
+              "description" : "Results per page(max 100)Default Value: 50",
+              "schema" : {
+                "maximum" : 100,
+                "type" : "integer",
+                "format" : "int32",
+                "default" : 50
+              }
+            }, {
+              "name" : "sortOrders",
+              "in" : "query",
+              "description" : "Sort criteria for the elements.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/SortOrder"
+                }
+              }
+            }, {
+              "name" : "pageToken",
+              "in" : "query",
+              "description" : "Page Token of the next results to fetch.Default Value: ''",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentFilterV2"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentFilterV2"
+                  }
+                }
+              }
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Paginated list of role assignments in the scope according to the given filter",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOPageResponseRoleAssignmentAggregate"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOPageResponseRoleAssignmentAggregate"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roleassignments/validate" : {
+          "post" : {
+            "tags" : [ "Role Assignments" ],
+            "summary" : "Validate Role Assignment",
+            "description" : "Check whether a proposed role assignment is valid.",
+            "operationId" : "validateRoleAssignment",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "description" : "This is the details of the role assignment for validation.",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentValidationRequest"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/RoleAssignmentValidationRequest"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "This is the result of the role assignment validation request.",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentValidationResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleAssignmentValidationResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roles" : {
+          "get" : {
+            "tags" : [ "Roles" ],
+            "summary" : "List Roles",
+            "description" : "List roles in the given scope",
+            "operationId" : "getRoleList",
+            "parameters" : [ {
+              "name" : "pageIndex",
+              "in" : "query",
+              "description" : "Page Index of the results to fetch.Default Value: 0",
+              "schema" : {
+                "type" : "integer",
+                "format" : "int32",
+                "default" : 0
+              }
+            }, {
+              "name" : "pageSize",
+              "in" : "query",
+              "description" : "Results per page(max 100)Default Value: 50",
+              "schema" : {
+                "maximum" : 100,
+                "type" : "integer",
+                "format" : "int32",
+                "default" : 50
+              }
+            }, {
+              "name" : "sortOrders",
+              "in" : "query",
+              "description" : "Sort criteria for the elements.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/SortOrder"
+                }
+              }
+            }, {
+              "name" : "pageToken",
+              "in" : "query",
+              "description" : "Page Token of the next results to fetch.Default Value: ''",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "searchTerm",
+              "in" : "query",
+              "description" : "Search roles by name/identifier",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "harnessManaged",
+              "in" : "query",
+              "description" : "Filter role by being harness managed",
+              "schema" : {
+                "type" : "boolean"
+              }
+            } ],
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Paginated list of roles in the given scope",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOPageResponseRoleWithPrincipalCountResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTOPageResponseRoleWithPrincipalCountResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "post" : {
+            "tags" : [ "Roles" ],
+            "summary" : "Create Role",
+            "description" : "Create a Custom Role in a scope",
+            "operationId" : "postRole",
+            "parameters" : [ {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "description" : "Role entity",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/Role"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/Role"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Created Role",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/roles/{identifier}" : {
+          "get" : {
+            "tags" : [ "Roles" ],
+            "summary" : "Get Role",
+            "description" : "Get a Role by identifier",
+            "operationId" : "getRole",
+            "parameters" : [ {
+              "name" : "identifier",
+              "in" : "path",
+              "description" : "Identifier of the Role",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Queried Role",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "put" : {
+            "tags" : [ "Roles" ],
+            "summary" : "Update Role",
+            "description" : "Update a Custom Role by identifier",
+            "operationId" : "putRole",
+            "parameters" : [ {
+              "name" : "identifier",
+              "in" : "path",
+              "description" : "Identifier of the Role",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "requestBody" : {
+              "description" : "Updated Role entity",
+              "content" : {
+                "application/json" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/Role"
+                  }
+                },
+                "application/yaml" : {
+                  "schema" : {
+                    "$ref" : "#/components/schemas/Role"
+                  }
+                }
+              },
+              "required" : true
+            },
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Updated Role",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "delete" : {
+            "tags" : [ "Roles" ],
+            "summary" : "Delete Role",
+            "description" : "Delete a Custom Role in a scope",
+            "operationId" : "deleteRole",
+            "parameters" : [ {
+              "name" : "identifier",
+              "in" : "path",
+              "description" : "Identifier of the Role",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "accountIdentifier",
+              "in" : "query",
+              "description" : "Account Identifier for the Entity.",
+              "required" : true,
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "orgIdentifier",
+              "in" : "query",
+              "description" : "Organization Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            }, {
+              "name" : "projectIdentifier",
+              "in" : "query",
+              "description" : "Project Identifier for the Entity.",
+              "schema" : {
+                "type" : "string"
+              }
+            } ],
+            "responses" : {
+              "400" : {
+                "description" : "Bad Request",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Failure"
+                    }
+                  }
+                }
+              },
+              "500" : {
+                "description" : "Internal server error",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/Error"
+                    }
+                  }
+                }
+              },
+              "403" : {
+                "description" : "Unauthorized",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/AccessDeniedError"
+                    }
+                  }
+                }
+              },
+              "default" : {
+                "description" : "Deleted Role",
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleResponse"
+                    }
+                  },
+                  "application/yaml" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/ResponseDTORoleResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "components" : {
+        "schemas" : {
+          "Failure" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "code" : {
+                "type" : "string",
+                "enum" : [ "DEFAULT_ERROR_CODE", "INVALID_ARGUMENT", "INVALID_EMAIL", "DOMAIN_NOT_ALLOWED_TO_REGISTER", "COMMNITY_EDITION_NOT_FOUND", "DEPLOY_MODE_IS_NOT_ON_PREM", "USER_ALREADY_REGISTERED", "USER_INVITATION_DOES_NOT_EXIST", "USER_DOES_NOT_EXIST", "USER_INVITE_OPERATION_FAILED", "USER_DISABLED", "ACCOUNT_DOES_NOT_EXIST", "INACTIVE_ACCOUNT", "ACCOUNT_MIGRATED", "ACCOUNT_MIGRATED_TO_NEXT_GEN", "USER_DOMAIN_NOT_ALLOWED", "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED", "RESOURCE_NOT_FOUND", "INVALID_FORMAT", "ROLE_DOES_NOT_EXIST", "EMAIL_NOT_VERIFIED", "EMAIL_VERIFICATION_TOKEN_NOT_FOUND", "INVALID_TOKEN", "REVOKED_TOKEN", "INVALID_CAPTCHA_TOKEN", "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS", "EXPIRED_TOKEN", "INVALID_AGENT_MTLS_AUTHORITY", "TOKEN_ALREADY_REFRESHED_ONCE", "ACCESS_DENIED", "NG_ACCESS_DENIED", "INVALID_CREDENTIAL", "INVALID_CREDENTIALS_THIRD_PARTY", "INVALID_KEY", "INVALID_CONNECTOR_TYPE", "INVALID_KEYPATH", "INVALID_VARIABLE", "UNKNOWN_HOST", "UNREACHABLE_HOST", "INVALID_PORT", "SSH_SESSION_TIMEOUT", "ALGORITHM_NEGOTIATION_ERROR", "SOCKET_CONNECTION_ERROR", "CONNECTION_ERROR", "SOCKET_CONNECTION_TIMEOUT", "WINRM_COMMAND_EXECUTION_TIMEOUT", "CONNECTION_TIMEOUT", "SSH_CONNECTION_ERROR", "USER_GROUP_ERROR", "INVALID_EXECUTION_ID", "ERROR_IN_GETTING_CHANNEL_STREAMS", "UNEXPECTED", "UNKNOWN_ERROR", "UNKNOWN_EXECUTOR_TYPE_ERROR", "DUPLICATE_STATE_NAMES", "TRANSITION_NOT_LINKED", "TRANSITION_TO_INCORRECT_STATE", "TRANSITION_TYPE_NULL", "STATES_WITH_DUP_TRANSITIONS", "BARRIERS_NOT_RUNNING_CONCURRENTLY", "NON_FORK_STATES", "NON_REPEAT_STATES", "INITIAL_STATE_NOT_DEFINED", "FILE_INTEGRITY_CHECK_FAILED", "INVALID_URL", "FILE_DOWNLOAD_FAILED", "PLATFORM_SOFTWARE_DELETE_ERROR", "INVALID_CSV_FILE", "INVALID_REQUEST", "SCHEMA_VALIDATION_FAILED", "FILTER_CREATION_ERROR", "INVALID_YAML_ERROR", "PLAN_CREATION_ERROR", "INVALID_INFRA_STATE", "PIPELINE_ALREADY_TRIGGERED", "NON_EXISTING_PIPELINE", "DUPLICATE_COMMAND_NAMES", "INVALID_PIPELINE", "COMMAND_DOES_NOT_EXIST", "DUPLICATE_ARTIFACTSTREAM_NAMES", "DUPLICATE_HOST_NAMES", "STATE_NOT_FOR_TYPE", "STATE_MACHINE_ISSUE", "STATE_DISCONTINUE_FAILED", "STATE_PAUSE_FAILED", "PAUSE_ALL_ALREADY", "RESUME_ALL_ALREADY", "ROLLBACK_ALREADY", "ABORT_ALL_ALREADY", "EXPIRE_ALL_ALREADY", "RETRY_FAILED", "UNKNOWN_ARTIFACT_TYPE", "UNKNOWN_STAGE_ELEMENT_WRAPPER_TYPE", "INIT_TIMEOUT", "LICENSE_EXPIRED", "NOT_LICENSED", "REQUEST_TIMEOUT", "SCM_REQUEST_TIMEOUT", "WORKFLOW_ALREADY_TRIGGERED", "JENKINS_ERROR", "INVALID_ARTIFACT_SOURCE", "INVALID_ARTIFACT_SERVER", "INVALID_CLOUD_PROVIDER", "UPDATE_NOT_ALLOWED", "DELETE_NOT_ALLOWED", "APPDYNAMICS_CONFIGURATION_ERROR", "APM_CONFIGURATION_ERROR", "SPLUNK_CONFIGURATION_ERROR", "ELK_CONFIGURATION_ERROR", "LOGZ_CONFIGURATION_ERROR", "SUMO_CONFIGURATION_ERROR", "INSTANA_CONFIGURATION_ERROR", "APPDYNAMICS_ERROR", "STACKDRIVER_ERROR", "STACKDRIVER_CONFIGURATION_ERROR", "NEWRELIC_CONFIGURATION_ERROR", "NEWRELIC_ERROR", "DYNA_TRACE_CONFIGURATION_ERROR", "DYNA_TRACE_ERROR", "CLOUDWATCH_ERROR", "CLOUDWATCH_CONFIGURATION_ERROR", "PROMETHEUS_CONFIGURATION_ERROR", "DATA_DOG_CONFIGURATION_ERROR", "SERVICE_GUARD_CONFIGURATION_ERROR", "ENCRYPTION_NOT_CONFIGURED", "UNAVAILABLE_DELEGATES", "WORKFLOW_EXECUTION_IN_PROGRESS", "PIPELINE_EXECUTION_IN_PROGRESS", "AWS_ACCESS_DENIED", "AWS_CLUSTER_NOT_FOUND", "AWS_SERVICE_NOT_FOUND", "IMAGE_NOT_FOUND", "ILLEGAL_ARGUMENT", "IMAGE_TAG_NOT_FOUND", "DELEGATE_NOT_AVAILABLE", "INVALID_YAML_PAYLOAD", "AUTHENTICATION_ERROR", "AUTHORIZATION_ERROR", "UNRECOGNIZED_YAML_FIELDS", "COULD_NOT_MAP_BEFORE_YAML", "MISSING_BEFORE_YAML", "MISSING_YAML", "NON_EMPTY_DELETIONS", "GENERAL_YAML_ERROR", "GENERAL_YAML_INFO", "YAML_GIT_SYNC_ERROR", "GIT_CONNECTION_ERROR", "GIT_ERROR", "ARTIFACT_SERVER_ERROR", "ENCRYPT_DECRYPT_ERROR", "SECRET_MANAGEMENT_ERROR", "SECRET_NOT_FOUND", "KMS_OPERATION_ERROR", "GCP_KMS_OPERATION_ERROR", "VAULT_OPERATION_ERROR", "AWS_SECRETS_MANAGER_OPERATION_ERROR", "AZURE_KEY_VAULT_OPERATION_ERROR", "AZURE_KEY_VAULT_INTERRUPT_ERROR", "UNSUPPORTED_OPERATION_EXCEPTION", "FEATURE_UNAVAILABLE", "GENERAL_ERROR", "BASELINE_CONFIGURATION_ERROR", "SAML_IDP_CONFIGURATION_NOT_AVAILABLE", "INVALID_AUTHENTICATION_MECHANISM", "INVALID_SAML_CONFIGURATION", "INVALID_OAUTH_CONFIGURATION", "INVALID_LDAP_CONFIGURATION", "USER_GROUP_SYNC_FAILURE", "USER_GROUP_ALREADY_EXIST", "INVALID_TWO_FACTOR_AUTHENTICATION_CONFIGURATION", "EXPLANATION", "HINT", "NOT_WHITELISTED_IP", "INVALID_TOTP_TOKEN", "EMAIL_FAILED", "SSL_HANDSHAKE_FAILED", "NO_APPS_ASSIGNED", "INVALID_INFRA_CONFIGURATION", "TEMPLATES_LINKED", "USER_HAS_NO_PERMISSIONS", "USER_NOT_AUTHORIZED", "USER_ALREADY_PRESENT", "EMAIL_ERROR", "INVALID_USAGE_RESTRICTION", "USAGE_RESTRICTION_ERROR", "STATE_EXECUTION_INSTANCE_NOT_FOUND", "DELEGATE_TASK_RETRY", "KUBERNETES_API_TASK_EXCEPTION", "KUBERNETES_TASK_EXCEPTION", "KUBERNETES_YAML_ERROR", "SAVE_FILE_INTO_GCP_STORAGE_FAILED", "READ_FILE_FROM_GCP_STORAGE_FAILED", "FILE_NOT_FOUND_ERROR", "USAGE_LIMITS_EXCEEDED", "EVENT_PUBLISH_FAILED", "CUSTOM_APPROVAL_ERROR", "JIRA_ERROR", "EXPRESSION_EVALUATION_FAILED", "KUBERNETES_VALUES_ERROR", "KUBERNETES_CLUSTER_ERROR", "INCORRECT_SIGN_IN_MECHANISM", "OAUTH_LOGIN_FAILED", "INVALID_TERRAFORM_TARGETS_REQUEST", "TERRAFORM_EXECUTION_ERROR", "FILE_READ_FAILED", "FILE_SIZE_EXCEEDS_LIMIT", "CLUSTER_NOT_FOUND", "MARKETPLACE_TOKEN_NOT_FOUND", "INVALID_MARKETPLACE_TOKEN", "INVALID_TICKETING_SERVER", "SERVICENOW_ERROR", "PASSWORD_EXPIRED", "USER_LOCKED", "PASSWORD_STRENGTH_CHECK_FAILED", "ACCOUNT_DISABLED", "INVALID_ACCOUNT_PERMISSION", "PAGERDUTY_ERROR", "HEALTH_ERROR", "SAML_TEST_SUCCESS_MECHANISM_NOT_ENABLED", "DOMAIN_WHITELIST_FILTER_CHECK_FAILED", "INVALID_DASHBOARD_UPDATE_REQUEST", "DUPLICATE_FIELD", "INVALID_AZURE_VAULT_CONFIGURATION", "USER_NOT_AUTHORIZED_DUE_TO_USAGE_RESTRICTIONS", "INVALID_ROLLBACK", "DATA_COLLECTION_ERROR", "SUMO_DATA_COLLECTION_ERROR", "DEPLOYMENT_GOVERNANCE_ERROR", "BATCH_PROCESSING_ERROR", "GRAPHQL_ERROR", "FILE_CREATE_ERROR", "ILLEGAL_STATE", "GIT_DIFF_COMMIT_NOT_IN_ORDER", "FAILED_TO_ACQUIRE_PERSISTENT_LOCK", "FAILED_TO_ACQUIRE_NON_PERSISTENT_LOCK", "POD_NOT_FOUND_ERROR", "COMMAND_EXECUTION_ERROR", "REGISTRY_EXCEPTION", "ENGINE_INTERRUPT_PROCESSING_EXCEPTION", "ENGINE_IO_EXCEPTION", "ENGINE_OUTCOME_EXCEPTION", "ENGINE_SWEEPING_OUTPUT_EXCEPTION", "CACHE_NOT_FOUND_EXCEPTION", "ENGINE_ENTITY_UPDATE_EXCEPTION", "SHELL_EXECUTION_EXCEPTION", "TEMPLATE_NOT_FOUND", "AZURE_SERVICE_EXCEPTION", "AZURE_CLIENT_EXCEPTION", "GIT_UNSEEN_REMOTE_HEAD_COMMIT", "TIMEOUT_ENGINE_EXCEPTION", "NO_AVAILABLE_DELEGATES", "NO_GLOBAL_DELEGATE_ACCOUNT", "NO_INSTALLED_DELEGATES", "DUPLICATE_DELEGATE_EXCEPTION", "GCP_MARKETPLACE_EXCEPTION", "MISSING_DEFAULT_GOOGLE_CREDENTIALS", "INCORRECT_DEFAULT_GOOGLE_CREDENTIALS", "OPTIMISTIC_LOCKING_EXCEPTION", "NG_PIPELINE_EXECUTION_EXCEPTION", "NG_PIPELINE_CREATE_EXCEPTION", "RESOURCE_NOT_FOUND_EXCEPTION", "PMS_INITIALIZE_SDK_EXCEPTION", "UNEXPECTED_SNIPPET_EXCEPTION", "UNEXPECTED_SCHEMA_EXCEPTION", "CONNECTOR_VALIDATION_EXCEPTION", "TIMESCALE_NOT_AVAILABLE", "MIGRATION_EXCEPTION", "REQUEST_PROCESSING_INTERRUPTED", "SECRET_MANAGER_ID_NOT_FOUND", "GCP_SECRET_MANAGER_OPERATION_ERROR", "GCP_SECRET_OPERATION_ERROR", "GIT_OPERATION_ERROR", "TASK_FAILURE_ERROR", "INSTANCE_STATS_PROCESS_ERROR", "INSTANCE_STATS_MIGRATION_ERROR", "DEPLOYMENT_MIGRATION_ERROR", "CG_LICENSE_USAGE_ERROR", "INSTANCE_STATS_AGGREGATION_ERROR", "UNRESOLVED_EXPRESSIONS_ERROR", "KRYO_HANDLER_NOT_FOUND_ERROR", "DELEGATE_ERROR_HANDLER_EXCEPTION", "DELEGATE_SERVICE_DRIVER_EXCEPTION", "DELEGATE_INSTALLATION_COMMAND_NOT_SUPPORTED_EXCEPTION", "UNEXPECTED_TYPE_ERROR", "EXCEPTION_HANDLER_NOT_FOUND", "CONNECTOR_NOT_FOUND_EXCEPTION", "GCP_SERVER_ERROR", "HTTP_RESPONSE_EXCEPTION", "SCM_NOT_FOUND_ERROR", "SCM_CONFLICT_ERROR", "SCM_CONFLICT_ERROR_V2", "SCM_UNPROCESSABLE_ENTITY", "PROCESS_EXECUTION_EXCEPTION", "SCM_UNAUTHORIZED", "SCM_BAD_REQUEST", "SCM_INTERNAL_SERVER_ERROR", "DATA", "CONTEXT", "PR_CREATION_ERROR", "URL_NOT_REACHABLE", "URL_NOT_PROVIDED", "ENGINE_EXPRESSION_EVALUATION_ERROR", "ENGINE_FUNCTOR_ERROR", "JIRA_CLIENT_ERROR", "SCM_NOT_MODIFIED", "APPROVAL_STEP_NG_ERROR", "BUCKET_SERVER_ERROR", "GIT_SYNC_ERROR", "TEMPLATE_EXCEPTION", "TEMPLATE_ALREADY_EXISTS_EXCEPTION", "ENTITY_REFERENCE_EXCEPTION", "ACTIVE_SERVICE_INSTANCES_PRESENT_EXCEPTION", "INVALID_INPUT_SET", "INVALID_OVERLAY_INPUT_SET", "RESOURCE_ALREADY_EXISTS", "INVALID_JSON_PAYLOAD", "POLICY_EVALUATION_FAILURE", "POLICY_SET_ERROR", "INVALID_ARTIFACTORY_REGISTRY_REQUEST", "INVALID_NEXUS_REGISTRY_REQUEST", "ENTITY_NOT_FOUND", "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST", "AZURE_AUTHENTICATION_ERROR", "AZURE_CONFIG_ERROR", "DATA_PROCESSING_ERROR", "INVALID_AZURE_AKS_REQUEST", "AWS_IAM_ERROR", "AWS_CF_ERROR", "AWS_INSTANCE_ERROR", "AWS_VPC_ERROR", "AWS_TAG_ERROR", "AWS_ASG_ERROR", "AWS_LOAD_BALANCER_ERROR", "SCM_INTERNAL_SERVER_ERROR_V2", "SCM_FAILED_DEPENDENCY_ERROR", "SCM_UNAUTHORIZED_ERROR_V2", "TOO_MANY_REQUESTS", "INVALID_IDENTIFIER_REF", "SPOTINST_NULL_ERROR", "SPOTNIST_REST_EXCEPTION", "SCM_UNEXPECTED_ERROR", "DUPLICATE_FILE_IMPORT", "AZURE_APP_SERVICES_TASK_EXCEPTION", "AZURE_ARM_TASK_EXCEPTION", "AZURE_BP_TASK_EXCEPTION", "MEDIA_NOT_SUPPORTED", "AWS_ECS_ERROR", "AWS_APPLICATION_AUTO_SCALING", "AWS_ECS_SERVICE_NOT_ACTIVE", "AWS_ECS_CLIENT_ERROR", "AWS_STS_ERROR", "FREEZE_EXCEPTION", "MISSING_EXCEPTION", "DELEGATE_TASK_EXPIRED", "DELEGATE_TASK_VALIDATION_FAILED", "MONGO_EXECUTION_TIMEOUT_EXCEPTION", "DELEGATE_NOT_REGISTERED", "TERRAFORM_VAULT_SECRET_CLEANUP_FAILURE", "APPROVAL_REJECTION", "TERRAGRUNT_EXECUTION_ERROR", "ADFS_ERROR", "TERRAFORM_CLOUD_ERROR", "CLUSTER_CREDENTIALS_NOT_FOUND", "SCM_API_ERROR", "INTERNAL_SERVER_ERROR", "SCM_FORBIDDEN", "AWS_EKS_ERROR", "OPA_POLICY_EVALUATION_ERROR", "USER_MARKED_FAILURE", "SSH_RETRY", "HTTP_CLIENT_ERROR_RESPONSE", "HTTP_INTERNAL_SERVER_ERROR", "HTTP_BAD_GATEWAY", "HTTP_SERVICE_UNAVAILABLE", "HTTP_GATEWAY_TIMEOUT", "HTTP_SERVER_ERROR_RESPONSE", "PIPELINE_UPDATE_EXCEPTION", "SERVICENOW_REFRESH_TOKEN_ERROR", "PARAMETER_FIELD_CAST_ERROR", "ABORT_ALL_ALREADY_NG", "WEBHOOK_EXCEPTION", "INVALID_OIDC_CONFIGURATION", "INVALID_CREDENTIALS", "INVALID_OR_PRIVATE_REPO", "BARRIER_FAILED_ERROR", "ELASTICSEARCH_NOT_AVAILABLE", "OBJECT_STORE_NOT_AVAILABLE" ]
+              },
+              "message" : {
+                "type" : "string"
+              },
+              "correlationId" : {
+                "type" : "string"
+              },
+              "errors" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/ValidationError"
+                }
+              }
+            },
+            "description" : "This is Failure entity as defied in Harness"
+          },
+          "ValidationError" : {
+            "type" : "object",
+            "properties" : {
+              "fieldId" : {
+                "type" : "string"
+              },
+              "error" : {
+                "type" : "string"
+              }
+            }
+          },
+          "Error" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "code" : {
+                "type" : "string",
+                "enum" : [ "DEFAULT_ERROR_CODE", "INVALID_ARGUMENT", "INVALID_EMAIL", "DOMAIN_NOT_ALLOWED_TO_REGISTER", "COMMNITY_EDITION_NOT_FOUND", "DEPLOY_MODE_IS_NOT_ON_PREM", "USER_ALREADY_REGISTERED", "USER_INVITATION_DOES_NOT_EXIST", "USER_DOES_NOT_EXIST", "USER_INVITE_OPERATION_FAILED", "USER_DISABLED", "ACCOUNT_DOES_NOT_EXIST", "INACTIVE_ACCOUNT", "ACCOUNT_MIGRATED", "ACCOUNT_MIGRATED_TO_NEXT_GEN", "USER_DOMAIN_NOT_ALLOWED", "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED", "RESOURCE_NOT_FOUND", "INVALID_FORMAT", "ROLE_DOES_NOT_EXIST", "EMAIL_NOT_VERIFIED", "EMAIL_VERIFICATION_TOKEN_NOT_FOUND", "INVALID_TOKEN", "REVOKED_TOKEN", "INVALID_CAPTCHA_TOKEN", "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS", "EXPIRED_TOKEN", "INVALID_AGENT_MTLS_AUTHORITY", "TOKEN_ALREADY_REFRESHED_ONCE", "ACCESS_DENIED", "NG_ACCESS_DENIED", "INVALID_CREDENTIAL", "INVALID_CREDENTIALS_THIRD_PARTY", "INVALID_KEY", "INVALID_CONNECTOR_TYPE", "INVALID_KEYPATH", "INVALID_VARIABLE", "UNKNOWN_HOST", "UNREACHABLE_HOST", "INVALID_PORT", "SSH_SESSION_TIMEOUT", "ALGORITHM_NEGOTIATION_ERROR", "SOCKET_CONNECTION_ERROR", "CONNECTION_ERROR", "SOCKET_CONNECTION_TIMEOUT", "WINRM_COMMAND_EXECUTION_TIMEOUT", "CONNECTION_TIMEOUT", "SSH_CONNECTION_ERROR", "USER_GROUP_ERROR", "INVALID_EXECUTION_ID", "ERROR_IN_GETTING_CHANNEL_STREAMS", "UNEXPECTED", "UNKNOWN_ERROR", "UNKNOWN_EXECUTOR_TYPE_ERROR", "DUPLICATE_STATE_NAMES", "TRANSITION_NOT_LINKED", "TRANSITION_TO_INCORRECT_STATE", "TRANSITION_TYPE_NULL", "STATES_WITH_DUP_TRANSITIONS", "BARRIERS_NOT_RUNNING_CONCURRENTLY", "NON_FORK_STATES", "NON_REPEAT_STATES", "INITIAL_STATE_NOT_DEFINED", "FILE_INTEGRITY_CHECK_FAILED", "INVALID_URL", "FILE_DOWNLOAD_FAILED", "PLATFORM_SOFTWARE_DELETE_ERROR", "INVALID_CSV_FILE", "INVALID_REQUEST", "SCHEMA_VALIDATION_FAILED", "FILTER_CREATION_ERROR", "INVALID_YAML_ERROR", "PLAN_CREATION_ERROR", "INVALID_INFRA_STATE", "PIPELINE_ALREADY_TRIGGERED", "NON_EXISTING_PIPELINE", "DUPLICATE_COMMAND_NAMES", "INVALID_PIPELINE", "COMMAND_DOES_NOT_EXIST", "DUPLICATE_ARTIFACTSTREAM_NAMES", "DUPLICATE_HOST_NAMES", "STATE_NOT_FOR_TYPE", "STATE_MACHINE_ISSUE", "STATE_DISCONTINUE_FAILED", "STATE_PAUSE_FAILED", "PAUSE_ALL_ALREADY", "RESUME_ALL_ALREADY", "ROLLBACK_ALREADY", "ABORT_ALL_ALREADY", "EXPIRE_ALL_ALREADY", "RETRY_FAILED", "UNKNOWN_ARTIFACT_TYPE", "UNKNOWN_STAGE_ELEMENT_WRAPPER_TYPE", "INIT_TIMEOUT", "LICENSE_EXPIRED", "NOT_LICENSED", "REQUEST_TIMEOUT", "SCM_REQUEST_TIMEOUT", "WORKFLOW_ALREADY_TRIGGERED", "JENKINS_ERROR", "INVALID_ARTIFACT_SOURCE", "INVALID_ARTIFACT_SERVER", "INVALID_CLOUD_PROVIDER", "UPDATE_NOT_ALLOWED", "DELETE_NOT_ALLOWED", "APPDYNAMICS_CONFIGURATION_ERROR", "APM_CONFIGURATION_ERROR", "SPLUNK_CONFIGURATION_ERROR", "ELK_CONFIGURATION_ERROR", "LOGZ_CONFIGURATION_ERROR", "SUMO_CONFIGURATION_ERROR", "INSTANA_CONFIGURATION_ERROR", "APPDYNAMICS_ERROR", "STACKDRIVER_ERROR", "STACKDRIVER_CONFIGURATION_ERROR", "NEWRELIC_CONFIGURATION_ERROR", "NEWRELIC_ERROR", "DYNA_TRACE_CONFIGURATION_ERROR", "DYNA_TRACE_ERROR", "CLOUDWATCH_ERROR", "CLOUDWATCH_CONFIGURATION_ERROR", "PROMETHEUS_CONFIGURATION_ERROR", "DATA_DOG_CONFIGURATION_ERROR", "SERVICE_GUARD_CONFIGURATION_ERROR", "ENCRYPTION_NOT_CONFIGURED", "UNAVAILABLE_DELEGATES", "WORKFLOW_EXECUTION_IN_PROGRESS", "PIPELINE_EXECUTION_IN_PROGRESS", "AWS_ACCESS_DENIED", "AWS_CLUSTER_NOT_FOUND", "AWS_SERVICE_NOT_FOUND", "IMAGE_NOT_FOUND", "ILLEGAL_ARGUMENT", "IMAGE_TAG_NOT_FOUND", "DELEGATE_NOT_AVAILABLE", "INVALID_YAML_PAYLOAD", "AUTHENTICATION_ERROR", "AUTHORIZATION_ERROR", "UNRECOGNIZED_YAML_FIELDS", "COULD_NOT_MAP_BEFORE_YAML", "MISSING_BEFORE_YAML", "MISSING_YAML", "NON_EMPTY_DELETIONS", "GENERAL_YAML_ERROR", "GENERAL_YAML_INFO", "YAML_GIT_SYNC_ERROR", "GIT_CONNECTION_ERROR", "GIT_ERROR", "ARTIFACT_SERVER_ERROR", "ENCRYPT_DECRYPT_ERROR", "SECRET_MANAGEMENT_ERROR", "SECRET_NOT_FOUND", "KMS_OPERATION_ERROR", "GCP_KMS_OPERATION_ERROR", "VAULT_OPERATION_ERROR", "AWS_SECRETS_MANAGER_OPERATION_ERROR", "AZURE_KEY_VAULT_OPERATION_ERROR", "AZURE_KEY_VAULT_INTERRUPT_ERROR", "UNSUPPORTED_OPERATION_EXCEPTION", "FEATURE_UNAVAILABLE", "GENERAL_ERROR", "BASELINE_CONFIGURATION_ERROR", "SAML_IDP_CONFIGURATION_NOT_AVAILABLE", "INVALID_AUTHENTICATION_MECHANISM", "INVALID_SAML_CONFIGURATION", "INVALID_OAUTH_CONFIGURATION", "INVALID_LDAP_CONFIGURATION", "USER_GROUP_SYNC_FAILURE", "USER_GROUP_ALREADY_EXIST", "INVALID_TWO_FACTOR_AUTHENTICATION_CONFIGURATION", "EXPLANATION", "HINT", "NOT_WHITELISTED_IP", "INVALID_TOTP_TOKEN", "EMAIL_FAILED", "SSL_HANDSHAKE_FAILED", "NO_APPS_ASSIGNED", "INVALID_INFRA_CONFIGURATION", "TEMPLATES_LINKED", "USER_HAS_NO_PERMISSIONS", "USER_NOT_AUTHORIZED", "USER_ALREADY_PRESENT", "EMAIL_ERROR", "INVALID_USAGE_RESTRICTION", "USAGE_RESTRICTION_ERROR", "STATE_EXECUTION_INSTANCE_NOT_FOUND", "DELEGATE_TASK_RETRY", "KUBERNETES_API_TASK_EXCEPTION", "KUBERNETES_TASK_EXCEPTION", "KUBERNETES_YAML_ERROR", "SAVE_FILE_INTO_GCP_STORAGE_FAILED", "READ_FILE_FROM_GCP_STORAGE_FAILED", "FILE_NOT_FOUND_ERROR", "USAGE_LIMITS_EXCEEDED", "EVENT_PUBLISH_FAILED", "CUSTOM_APPROVAL_ERROR", "JIRA_ERROR", "EXPRESSION_EVALUATION_FAILED", "KUBERNETES_VALUES_ERROR", "KUBERNETES_CLUSTER_ERROR", "INCORRECT_SIGN_IN_MECHANISM", "OAUTH_LOGIN_FAILED", "INVALID_TERRAFORM_TARGETS_REQUEST", "TERRAFORM_EXECUTION_ERROR", "FILE_READ_FAILED", "FILE_SIZE_EXCEEDS_LIMIT", "CLUSTER_NOT_FOUND", "MARKETPLACE_TOKEN_NOT_FOUND", "INVALID_MARKETPLACE_TOKEN", "INVALID_TICKETING_SERVER", "SERVICENOW_ERROR", "PASSWORD_EXPIRED", "USER_LOCKED", "PASSWORD_STRENGTH_CHECK_FAILED", "ACCOUNT_DISABLED", "INVALID_ACCOUNT_PERMISSION", "PAGERDUTY_ERROR", "HEALTH_ERROR", "SAML_TEST_SUCCESS_MECHANISM_NOT_ENABLED", "DOMAIN_WHITELIST_FILTER_CHECK_FAILED", "INVALID_DASHBOARD_UPDATE_REQUEST", "DUPLICATE_FIELD", "INVALID_AZURE_VAULT_CONFIGURATION", "USER_NOT_AUTHORIZED_DUE_TO_USAGE_RESTRICTIONS", "INVALID_ROLLBACK", "DATA_COLLECTION_ERROR", "SUMO_DATA_COLLECTION_ERROR", "DEPLOYMENT_GOVERNANCE_ERROR", "BATCH_PROCESSING_ERROR", "GRAPHQL_ERROR", "FILE_CREATE_ERROR", "ILLEGAL_STATE", "GIT_DIFF_COMMIT_NOT_IN_ORDER", "FAILED_TO_ACQUIRE_PERSISTENT_LOCK", "FAILED_TO_ACQUIRE_NON_PERSISTENT_LOCK", "POD_NOT_FOUND_ERROR", "COMMAND_EXECUTION_ERROR", "REGISTRY_EXCEPTION", "ENGINE_INTERRUPT_PROCESSING_EXCEPTION", "ENGINE_IO_EXCEPTION", "ENGINE_OUTCOME_EXCEPTION", "ENGINE_SWEEPING_OUTPUT_EXCEPTION", "CACHE_NOT_FOUND_EXCEPTION", "ENGINE_ENTITY_UPDATE_EXCEPTION", "SHELL_EXECUTION_EXCEPTION", "TEMPLATE_NOT_FOUND", "AZURE_SERVICE_EXCEPTION", "AZURE_CLIENT_EXCEPTION", "GIT_UNSEEN_REMOTE_HEAD_COMMIT", "TIMEOUT_ENGINE_EXCEPTION", "NO_AVAILABLE_DELEGATES", "NO_GLOBAL_DELEGATE_ACCOUNT", "NO_INSTALLED_DELEGATES", "DUPLICATE_DELEGATE_EXCEPTION", "GCP_MARKETPLACE_EXCEPTION", "MISSING_DEFAULT_GOOGLE_CREDENTIALS", "INCORRECT_DEFAULT_GOOGLE_CREDENTIALS", "OPTIMISTIC_LOCKING_EXCEPTION", "NG_PIPELINE_EXECUTION_EXCEPTION", "NG_PIPELINE_CREATE_EXCEPTION", "RESOURCE_NOT_FOUND_EXCEPTION", "PMS_INITIALIZE_SDK_EXCEPTION", "UNEXPECTED_SNIPPET_EXCEPTION", "UNEXPECTED_SCHEMA_EXCEPTION", "CONNECTOR_VALIDATION_EXCEPTION", "TIMESCALE_NOT_AVAILABLE", "MIGRATION_EXCEPTION", "REQUEST_PROCESSING_INTERRUPTED", "SECRET_MANAGER_ID_NOT_FOUND", "GCP_SECRET_MANAGER_OPERATION_ERROR", "GCP_SECRET_OPERATION_ERROR", "GIT_OPERATION_ERROR", "TASK_FAILURE_ERROR", "INSTANCE_STATS_PROCESS_ERROR", "INSTANCE_STATS_MIGRATION_ERROR", "DEPLOYMENT_MIGRATION_ERROR", "CG_LICENSE_USAGE_ERROR", "INSTANCE_STATS_AGGREGATION_ERROR", "UNRESOLVED_EXPRESSIONS_ERROR", "KRYO_HANDLER_NOT_FOUND_ERROR", "DELEGATE_ERROR_HANDLER_EXCEPTION", "DELEGATE_SERVICE_DRIVER_EXCEPTION", "DELEGATE_INSTALLATION_COMMAND_NOT_SUPPORTED_EXCEPTION", "UNEXPECTED_TYPE_ERROR", "EXCEPTION_HANDLER_NOT_FOUND", "CONNECTOR_NOT_FOUND_EXCEPTION", "GCP_SERVER_ERROR", "HTTP_RESPONSE_EXCEPTION", "SCM_NOT_FOUND_ERROR", "SCM_CONFLICT_ERROR", "SCM_CONFLICT_ERROR_V2", "SCM_UNPROCESSABLE_ENTITY", "PROCESS_EXECUTION_EXCEPTION", "SCM_UNAUTHORIZED", "SCM_BAD_REQUEST", "SCM_INTERNAL_SERVER_ERROR", "DATA", "CONTEXT", "PR_CREATION_ERROR", "URL_NOT_REACHABLE", "URL_NOT_PROVIDED", "ENGINE_EXPRESSION_EVALUATION_ERROR", "ENGINE_FUNCTOR_ERROR", "JIRA_CLIENT_ERROR", "SCM_NOT_MODIFIED", "APPROVAL_STEP_NG_ERROR", "BUCKET_SERVER_ERROR", "GIT_SYNC_ERROR", "TEMPLATE_EXCEPTION", "TEMPLATE_ALREADY_EXISTS_EXCEPTION", "ENTITY_REFERENCE_EXCEPTION", "ACTIVE_SERVICE_INSTANCES_PRESENT_EXCEPTION", "INVALID_INPUT_SET", "INVALID_OVERLAY_INPUT_SET", "RESOURCE_ALREADY_EXISTS", "INVALID_JSON_PAYLOAD", "POLICY_EVALUATION_FAILURE", "POLICY_SET_ERROR", "INVALID_ARTIFACTORY_REGISTRY_REQUEST", "INVALID_NEXUS_REGISTRY_REQUEST", "ENTITY_NOT_FOUND", "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST", "AZURE_AUTHENTICATION_ERROR", "AZURE_CONFIG_ERROR", "DATA_PROCESSING_ERROR", "INVALID_AZURE_AKS_REQUEST", "AWS_IAM_ERROR", "AWS_CF_ERROR", "AWS_INSTANCE_ERROR", "AWS_VPC_ERROR", "AWS_TAG_ERROR", "AWS_ASG_ERROR", "AWS_LOAD_BALANCER_ERROR", "SCM_INTERNAL_SERVER_ERROR_V2", "SCM_FAILED_DEPENDENCY_ERROR", "SCM_UNAUTHORIZED_ERROR_V2", "TOO_MANY_REQUESTS", "INVALID_IDENTIFIER_REF", "SPOTINST_NULL_ERROR", "SPOTNIST_REST_EXCEPTION", "SCM_UNEXPECTED_ERROR", "DUPLICATE_FILE_IMPORT", "AZURE_APP_SERVICES_TASK_EXCEPTION", "AZURE_ARM_TASK_EXCEPTION", "AZURE_BP_TASK_EXCEPTION", "MEDIA_NOT_SUPPORTED", "AWS_ECS_ERROR", "AWS_APPLICATION_AUTO_SCALING", "AWS_ECS_SERVICE_NOT_ACTIVE", "AWS_ECS_CLIENT_ERROR", "AWS_STS_ERROR", "FREEZE_EXCEPTION", "MISSING_EXCEPTION", "DELEGATE_TASK_EXPIRED", "DELEGATE_TASK_VALIDATION_FAILED", "MONGO_EXECUTION_TIMEOUT_EXCEPTION", "DELEGATE_NOT_REGISTERED", "TERRAFORM_VAULT_SECRET_CLEANUP_FAILURE", "APPROVAL_REJECTION", "TERRAGRUNT_EXECUTION_ERROR", "ADFS_ERROR", "TERRAFORM_CLOUD_ERROR", "CLUSTER_CREDENTIALS_NOT_FOUND", "SCM_API_ERROR", "INTERNAL_SERVER_ERROR", "SCM_FORBIDDEN", "AWS_EKS_ERROR", "OPA_POLICY_EVALUATION_ERROR", "USER_MARKED_FAILURE", "SSH_RETRY", "HTTP_CLIENT_ERROR_RESPONSE", "HTTP_INTERNAL_SERVER_ERROR", "HTTP_BAD_GATEWAY", "HTTP_SERVICE_UNAVAILABLE", "HTTP_GATEWAY_TIMEOUT", "HTTP_SERVER_ERROR_RESPONSE", "PIPELINE_UPDATE_EXCEPTION", "SERVICENOW_REFRESH_TOKEN_ERROR", "PARAMETER_FIELD_CAST_ERROR", "ABORT_ALL_ALREADY_NG", "WEBHOOK_EXCEPTION", "INVALID_OIDC_CONFIGURATION", "INVALID_CREDENTIALS", "INVALID_OR_PRIVATE_REPO", "BARRIER_FAILED_ERROR", "ELASTICSEARCH_NOT_AVAILABLE", "OBJECT_STORE_NOT_AVAILABLE" ]
+              },
+              "message" : {
+                "type" : "string"
+              },
+              "correlationId" : {
+                "type" : "string"
+              },
+              "detailedMessage" : {
+                "type" : "string"
+              },
+              "responseMessages" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/ResponseMessage"
+                }
+              },
+              "metadata" : {
+                "$ref" : "#/components/schemas/ErrorMetadata"
+              }
+            },
+            "description" : "This is Error entity as defined in Harness"
+          },
+          "ErrorMetadata" : {
+            "type" : "object",
+            "properties" : {
+              "type" : {
+                "type" : "string"
+              }
+            },
+            "description" : "This implements different error meta data objects",
+            "discriminator" : {
+              "propertyName" : "type"
+            }
+          },
+          "ResponseMessage" : {
+            "type" : "object",
+            "properties" : {
+              "code" : {
+                "type" : "string",
+                "enum" : [ "DEFAULT_ERROR_CODE", "INVALID_ARGUMENT", "INVALID_EMAIL", "DOMAIN_NOT_ALLOWED_TO_REGISTER", "COMMNITY_EDITION_NOT_FOUND", "DEPLOY_MODE_IS_NOT_ON_PREM", "USER_ALREADY_REGISTERED", "USER_INVITATION_DOES_NOT_EXIST", "USER_DOES_NOT_EXIST", "USER_INVITE_OPERATION_FAILED", "USER_DISABLED", "ACCOUNT_DOES_NOT_EXIST", "INACTIVE_ACCOUNT", "ACCOUNT_MIGRATED", "ACCOUNT_MIGRATED_TO_NEXT_GEN", "USER_DOMAIN_NOT_ALLOWED", "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED", "RESOURCE_NOT_FOUND", "INVALID_FORMAT", "ROLE_DOES_NOT_EXIST", "EMAIL_NOT_VERIFIED", "EMAIL_VERIFICATION_TOKEN_NOT_FOUND", "INVALID_TOKEN", "REVOKED_TOKEN", "INVALID_CAPTCHA_TOKEN", "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS", "EXPIRED_TOKEN", "INVALID_AGENT_MTLS_AUTHORITY", "TOKEN_ALREADY_REFRESHED_ONCE", "ACCESS_DENIED", "NG_ACCESS_DENIED", "INVALID_CREDENTIAL", "INVALID_CREDENTIALS_THIRD_PARTY", "INVALID_KEY", "INVALID_CONNECTOR_TYPE", "INVALID_KEYPATH", "INVALID_VARIABLE", "UNKNOWN_HOST", "UNREACHABLE_HOST", "INVALID_PORT", "SSH_SESSION_TIMEOUT", "ALGORITHM_NEGOTIATION_ERROR", "SOCKET_CONNECTION_ERROR", "CONNECTION_ERROR", "SOCKET_CONNECTION_TIMEOUT", "WINRM_COMMAND_EXECUTION_TIMEOUT", "CONNECTION_TIMEOUT", "SSH_CONNECTION_ERROR", "USER_GROUP_ERROR", "INVALID_EXECUTION_ID", "ERROR_IN_GETTING_CHANNEL_STREAMS", "UNEXPECTED", "UNKNOWN_ERROR", "UNKNOWN_EXECUTOR_TYPE_ERROR", "DUPLICATE_STATE_NAMES", "TRANSITION_NOT_LINKED", "TRANSITION_TO_INCORRECT_STATE", "TRANSITION_TYPE_NULL", "STATES_WITH_DUP_TRANSITIONS", "BARRIERS_NOT_RUNNING_CONCURRENTLY", "NON_FORK_STATES", "NON_REPEAT_STATES", "INITIAL_STATE_NOT_DEFINED", "FILE_INTEGRITY_CHECK_FAILED", "INVALID_URL", "FILE_DOWNLOAD_FAILED", "PLATFORM_SOFTWARE_DELETE_ERROR", "INVALID_CSV_FILE", "INVALID_REQUEST", "SCHEMA_VALIDATION_FAILED", "FILTER_CREATION_ERROR", "INVALID_YAML_ERROR", "PLAN_CREATION_ERROR", "INVALID_INFRA_STATE", "PIPELINE_ALREADY_TRIGGERED", "NON_EXISTING_PIPELINE", "DUPLICATE_COMMAND_NAMES", "INVALID_PIPELINE", "COMMAND_DOES_NOT_EXIST", "DUPLICATE_ARTIFACTSTREAM_NAMES", "DUPLICATE_HOST_NAMES", "STATE_NOT_FOR_TYPE", "STATE_MACHINE_ISSUE", "STATE_DISCONTINUE_FAILED", "STATE_PAUSE_FAILED", "PAUSE_ALL_ALREADY", "RESUME_ALL_ALREADY", "ROLLBACK_ALREADY", "ABORT_ALL_ALREADY", "EXPIRE_ALL_ALREADY", "RETRY_FAILED", "UNKNOWN_ARTIFACT_TYPE", "UNKNOWN_STAGE_ELEMENT_WRAPPER_TYPE", "INIT_TIMEOUT", "LICENSE_EXPIRED", "NOT_LICENSED", "REQUEST_TIMEOUT", "SCM_REQUEST_TIMEOUT", "WORKFLOW_ALREADY_TRIGGERED", "JENKINS_ERROR", "INVALID_ARTIFACT_SOURCE", "INVALID_ARTIFACT_SERVER", "INVALID_CLOUD_PROVIDER", "UPDATE_NOT_ALLOWED", "DELETE_NOT_ALLOWED", "APPDYNAMICS_CONFIGURATION_ERROR", "APM_CONFIGURATION_ERROR", "SPLUNK_CONFIGURATION_ERROR", "ELK_CONFIGURATION_ERROR", "LOGZ_CONFIGURATION_ERROR", "SUMO_CONFIGURATION_ERROR", "INSTANA_CONFIGURATION_ERROR", "APPDYNAMICS_ERROR", "STACKDRIVER_ERROR", "STACKDRIVER_CONFIGURATION_ERROR", "NEWRELIC_CONFIGURATION_ERROR", "NEWRELIC_ERROR", "DYNA_TRACE_CONFIGURATION_ERROR", "DYNA_TRACE_ERROR", "CLOUDWATCH_ERROR", "CLOUDWATCH_CONFIGURATION_ERROR", "PROMETHEUS_CONFIGURATION_ERROR", "DATA_DOG_CONFIGURATION_ERROR", "SERVICE_GUARD_CONFIGURATION_ERROR", "ENCRYPTION_NOT_CONFIGURED", "UNAVAILABLE_DELEGATES", "WORKFLOW_EXECUTION_IN_PROGRESS", "PIPELINE_EXECUTION_IN_PROGRESS", "AWS_ACCESS_DENIED", "AWS_CLUSTER_NOT_FOUND", "AWS_SERVICE_NOT_FOUND", "IMAGE_NOT_FOUND", "ILLEGAL_ARGUMENT", "IMAGE_TAG_NOT_FOUND", "DELEGATE_NOT_AVAILABLE", "INVALID_YAML_PAYLOAD", "AUTHENTICATION_ERROR", "AUTHORIZATION_ERROR", "UNRECOGNIZED_YAML_FIELDS", "COULD_NOT_MAP_BEFORE_YAML", "MISSING_BEFORE_YAML", "MISSING_YAML", "NON_EMPTY_DELETIONS", "GENERAL_YAML_ERROR", "GENERAL_YAML_INFO", "YAML_GIT_SYNC_ERROR", "GIT_CONNECTION_ERROR", "GIT_ERROR", "ARTIFACT_SERVER_ERROR", "ENCRYPT_DECRYPT_ERROR", "SECRET_MANAGEMENT_ERROR", "SECRET_NOT_FOUND", "KMS_OPERATION_ERROR", "GCP_KMS_OPERATION_ERROR", "VAULT_OPERATION_ERROR", "AWS_SECRETS_MANAGER_OPERATION_ERROR", "AZURE_KEY_VAULT_OPERATION_ERROR", "AZURE_KEY_VAULT_INTERRUPT_ERROR", "UNSUPPORTED_OPERATION_EXCEPTION", "FEATURE_UNAVAILABLE", "GENERAL_ERROR", "BASELINE_CONFIGURATION_ERROR", "SAML_IDP_CONFIGURATION_NOT_AVAILABLE", "INVALID_AUTHENTICATION_MECHANISM", "INVALID_SAML_CONFIGURATION", "INVALID_OAUTH_CONFIGURATION", "INVALID_LDAP_CONFIGURATION", "USER_GROUP_SYNC_FAILURE", "USER_GROUP_ALREADY_EXIST", "INVALID_TWO_FACTOR_AUTHENTICATION_CONFIGURATION", "EXPLANATION", "HINT", "NOT_WHITELISTED_IP", "INVALID_TOTP_TOKEN", "EMAIL_FAILED", "SSL_HANDSHAKE_FAILED", "NO_APPS_ASSIGNED", "INVALID_INFRA_CONFIGURATION", "TEMPLATES_LINKED", "USER_HAS_NO_PERMISSIONS", "USER_NOT_AUTHORIZED", "USER_ALREADY_PRESENT", "EMAIL_ERROR", "INVALID_USAGE_RESTRICTION", "USAGE_RESTRICTION_ERROR", "STATE_EXECUTION_INSTANCE_NOT_FOUND", "DELEGATE_TASK_RETRY", "KUBERNETES_API_TASK_EXCEPTION", "KUBERNETES_TASK_EXCEPTION", "KUBERNETES_YAML_ERROR", "SAVE_FILE_INTO_GCP_STORAGE_FAILED", "READ_FILE_FROM_GCP_STORAGE_FAILED", "FILE_NOT_FOUND_ERROR", "USAGE_LIMITS_EXCEEDED", "EVENT_PUBLISH_FAILED", "CUSTOM_APPROVAL_ERROR", "JIRA_ERROR", "EXPRESSION_EVALUATION_FAILED", "KUBERNETES_VALUES_ERROR", "KUBERNETES_CLUSTER_ERROR", "INCORRECT_SIGN_IN_MECHANISM", "OAUTH_LOGIN_FAILED", "INVALID_TERRAFORM_TARGETS_REQUEST", "TERRAFORM_EXECUTION_ERROR", "FILE_READ_FAILED", "FILE_SIZE_EXCEEDS_LIMIT", "CLUSTER_NOT_FOUND", "MARKETPLACE_TOKEN_NOT_FOUND", "INVALID_MARKETPLACE_TOKEN", "INVALID_TICKETING_SERVER", "SERVICENOW_ERROR", "PASSWORD_EXPIRED", "USER_LOCKED", "PASSWORD_STRENGTH_CHECK_FAILED", "ACCOUNT_DISABLED", "INVALID_ACCOUNT_PERMISSION", "PAGERDUTY_ERROR", "HEALTH_ERROR", "SAML_TEST_SUCCESS_MECHANISM_NOT_ENABLED", "DOMAIN_WHITELIST_FILTER_CHECK_FAILED", "INVALID_DASHBOARD_UPDATE_REQUEST", "DUPLICATE_FIELD", "INVALID_AZURE_VAULT_CONFIGURATION", "USER_NOT_AUTHORIZED_DUE_TO_USAGE_RESTRICTIONS", "INVALID_ROLLBACK", "DATA_COLLECTION_ERROR", "SUMO_DATA_COLLECTION_ERROR", "DEPLOYMENT_GOVERNANCE_ERROR", "BATCH_PROCESSING_ERROR", "GRAPHQL_ERROR", "FILE_CREATE_ERROR", "ILLEGAL_STATE", "GIT_DIFF_COMMIT_NOT_IN_ORDER", "FAILED_TO_ACQUIRE_PERSISTENT_LOCK", "FAILED_TO_ACQUIRE_NON_PERSISTENT_LOCK", "POD_NOT_FOUND_ERROR", "COMMAND_EXECUTION_ERROR", "REGISTRY_EXCEPTION", "ENGINE_INTERRUPT_PROCESSING_EXCEPTION", "ENGINE_IO_EXCEPTION", "ENGINE_OUTCOME_EXCEPTION", "ENGINE_SWEEPING_OUTPUT_EXCEPTION", "CACHE_NOT_FOUND_EXCEPTION", "ENGINE_ENTITY_UPDATE_EXCEPTION", "SHELL_EXECUTION_EXCEPTION", "TEMPLATE_NOT_FOUND", "AZURE_SERVICE_EXCEPTION", "AZURE_CLIENT_EXCEPTION", "GIT_UNSEEN_REMOTE_HEAD_COMMIT", "TIMEOUT_ENGINE_EXCEPTION", "NO_AVAILABLE_DELEGATES", "NO_GLOBAL_DELEGATE_ACCOUNT", "NO_INSTALLED_DELEGATES", "DUPLICATE_DELEGATE_EXCEPTION", "GCP_MARKETPLACE_EXCEPTION", "MISSING_DEFAULT_GOOGLE_CREDENTIALS", "INCORRECT_DEFAULT_GOOGLE_CREDENTIALS", "OPTIMISTIC_LOCKING_EXCEPTION", "NG_PIPELINE_EXECUTION_EXCEPTION", "NG_PIPELINE_CREATE_EXCEPTION", "RESOURCE_NOT_FOUND_EXCEPTION", "PMS_INITIALIZE_SDK_EXCEPTION", "UNEXPECTED_SNIPPET_EXCEPTION", "UNEXPECTED_SCHEMA_EXCEPTION", "CONNECTOR_VALIDATION_EXCEPTION", "TIMESCALE_NOT_AVAILABLE", "MIGRATION_EXCEPTION", "REQUEST_PROCESSING_INTERRUPTED", "SECRET_MANAGER_ID_NOT_FOUND", "GCP_SECRET_MANAGER_OPERATION_ERROR", "GCP_SECRET_OPERATION_ERROR", "GIT_OPERATION_ERROR", "TASK_FAILURE_ERROR", "INSTANCE_STATS_PROCESS_ERROR", "INSTANCE_STATS_MIGRATION_ERROR", "DEPLOYMENT_MIGRATION_ERROR", "CG_LICENSE_USAGE_ERROR", "INSTANCE_STATS_AGGREGATION_ERROR", "UNRESOLVED_EXPRESSIONS_ERROR", "KRYO_HANDLER_NOT_FOUND_ERROR", "DELEGATE_ERROR_HANDLER_EXCEPTION", "DELEGATE_SERVICE_DRIVER_EXCEPTION", "DELEGATE_INSTALLATION_COMMAND_NOT_SUPPORTED_EXCEPTION", "UNEXPECTED_TYPE_ERROR", "EXCEPTION_HANDLER_NOT_FOUND", "CONNECTOR_NOT_FOUND_EXCEPTION", "GCP_SERVER_ERROR", "HTTP_RESPONSE_EXCEPTION", "SCM_NOT_FOUND_ERROR", "SCM_CONFLICT_ERROR", "SCM_CONFLICT_ERROR_V2", "SCM_UNPROCESSABLE_ENTITY", "PROCESS_EXECUTION_EXCEPTION", "SCM_UNAUTHORIZED", "SCM_BAD_REQUEST", "SCM_INTERNAL_SERVER_ERROR", "DATA", "CONTEXT", "PR_CREATION_ERROR", "URL_NOT_REACHABLE", "URL_NOT_PROVIDED", "ENGINE_EXPRESSION_EVALUATION_ERROR", "ENGINE_FUNCTOR_ERROR", "JIRA_CLIENT_ERROR", "SCM_NOT_MODIFIED", "APPROVAL_STEP_NG_ERROR", "BUCKET_SERVER_ERROR", "GIT_SYNC_ERROR", "TEMPLATE_EXCEPTION", "TEMPLATE_ALREADY_EXISTS_EXCEPTION", "ENTITY_REFERENCE_EXCEPTION", "ACTIVE_SERVICE_INSTANCES_PRESENT_EXCEPTION", "INVALID_INPUT_SET", "INVALID_OVERLAY_INPUT_SET", "RESOURCE_ALREADY_EXISTS", "INVALID_JSON_PAYLOAD", "POLICY_EVALUATION_FAILURE", "POLICY_SET_ERROR", "INVALID_ARTIFACTORY_REGISTRY_REQUEST", "INVALID_NEXUS_REGISTRY_REQUEST", "ENTITY_NOT_FOUND", "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST", "AZURE_AUTHENTICATION_ERROR", "AZURE_CONFIG_ERROR", "DATA_PROCESSING_ERROR", "INVALID_AZURE_AKS_REQUEST", "AWS_IAM_ERROR", "AWS_CF_ERROR", "AWS_INSTANCE_ERROR", "AWS_VPC_ERROR", "AWS_TAG_ERROR", "AWS_ASG_ERROR", "AWS_LOAD_BALANCER_ERROR", "SCM_INTERNAL_SERVER_ERROR_V2", "SCM_FAILED_DEPENDENCY_ERROR", "SCM_UNAUTHORIZED_ERROR_V2", "TOO_MANY_REQUESTS", "INVALID_IDENTIFIER_REF", "SPOTINST_NULL_ERROR", "SPOTNIST_REST_EXCEPTION", "SCM_UNEXPECTED_ERROR", "DUPLICATE_FILE_IMPORT", "AZURE_APP_SERVICES_TASK_EXCEPTION", "AZURE_ARM_TASK_EXCEPTION", "AZURE_BP_TASK_EXCEPTION", "MEDIA_NOT_SUPPORTED", "AWS_ECS_ERROR", "AWS_APPLICATION_AUTO_SCALING", "AWS_ECS_SERVICE_NOT_ACTIVE", "AWS_ECS_CLIENT_ERROR", "AWS_STS_ERROR", "FREEZE_EXCEPTION", "MISSING_EXCEPTION", "DELEGATE_TASK_EXPIRED", "DELEGATE_TASK_VALIDATION_FAILED", "MONGO_EXECUTION_TIMEOUT_EXCEPTION", "DELEGATE_NOT_REGISTERED", "TERRAFORM_VAULT_SECRET_CLEANUP_FAILURE", "APPROVAL_REJECTION", "TERRAGRUNT_EXECUTION_ERROR", "ADFS_ERROR", "TERRAFORM_CLOUD_ERROR", "CLUSTER_CREDENTIALS_NOT_FOUND", "SCM_API_ERROR", "INTERNAL_SERVER_ERROR", "SCM_FORBIDDEN", "AWS_EKS_ERROR", "OPA_POLICY_EVALUATION_ERROR", "USER_MARKED_FAILURE", "SSH_RETRY", "HTTP_CLIENT_ERROR_RESPONSE", "HTTP_INTERNAL_SERVER_ERROR", "HTTP_BAD_GATEWAY", "HTTP_SERVICE_UNAVAILABLE", "HTTP_GATEWAY_TIMEOUT", "HTTP_SERVER_ERROR_RESPONSE", "PIPELINE_UPDATE_EXCEPTION", "SERVICENOW_REFRESH_TOKEN_ERROR", "PARAMETER_FIELD_CAST_ERROR", "ABORT_ALL_ALREADY_NG", "WEBHOOK_EXCEPTION", "INVALID_OIDC_CONFIGURATION", "INVALID_CREDENTIALS", "INVALID_OR_PRIVATE_REPO", "BARRIER_FAILED_ERROR", "ELASTICSEARCH_NOT_AVAILABLE", "OBJECT_STORE_NOT_AVAILABLE" ]
+              },
+              "level" : {
+                "type" : "string",
+                "enum" : [ "INFO", "ERROR" ]
+              },
+              "message" : {
+                "type" : "string"
+              },
+              "exception" : {
+                "type" : "object",
+                "properties" : {
+                  "stackTrace" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "classLoaderName" : {
+                          "type" : "string"
+                        },
+                        "moduleName" : {
+                          "type" : "string"
+                        },
+                        "moduleVersion" : {
+                          "type" : "string"
+                        },
+                        "methodName" : {
+                          "type" : "string"
+                        },
+                        "fileName" : {
+                          "type" : "string"
+                        },
+                        "lineNumber" : {
+                          "type" : "integer",
+                          "format" : "int32"
+                        },
+                        "nativeMethod" : {
+                          "type" : "boolean"
+                        },
+                        "className" : {
+                          "type" : "string"
+                        }
+                      }
+                    }
+                  },
+                  "message" : {
+                    "type" : "string"
+                  },
+                  "suppressed" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "stackTrace" : {
+                          "type" : "array",
+                          "items" : {
+                            "type" : "object",
+                            "properties" : {
+                              "classLoaderName" : {
+                                "type" : "string"
+                              },
+                              "moduleName" : {
+                                "type" : "string"
+                              },
+                              "moduleVersion" : {
+                                "type" : "string"
+                              },
+                              "methodName" : {
+                                "type" : "string"
+                              },
+                              "fileName" : {
+                                "type" : "string"
+                              },
+                              "lineNumber" : {
+                                "type" : "integer",
+                                "format" : "int32"
+                              },
+                              "nativeMethod" : {
+                                "type" : "boolean"
+                              },
+                              "className" : {
+                                "type" : "string"
+                              }
+                            }
+                          }
+                        },
+                        "message" : {
+                          "type" : "string"
+                        },
+                        "localizedMessage" : {
+                          "type" : "string"
+                        }
+                      }
+                    }
+                  },
+                  "localizedMessage" : {
+                    "type" : "string"
+                  }
+                }
+              },
+              "failureTypes" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "enum" : [ "EXPIRED", "DELEGATE_PROVISIONING", "CONNECTIVITY", "AUTHENTICATION", "VERIFICATION_FAILURE", "APPLICATION_ERROR", "AUTHORIZATION_ERROR", "TIMEOUT_ERROR", "POLICY_EVALUATION_FAILURE", "INPUT_TIMEOUT_FAILURE", "APPROVAL_REJECTION", "DELEGATE_RESTART", "USER_MARKED_FAILURE" ]
+                }
+              },
+              "additionalInfo" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "AccessCheckResponse" : {
+            "type" : "object",
+            "properties" : {
+              "principal" : {
+                "$ref" : "#/components/schemas/Principal"
+              },
+              "accessControlList" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/AccessControl"
+                }
+              }
+            }
+          },
+          "AccessControl" : {
+            "type" : "object",
+            "properties" : {
+              "permission" : {
+                "type" : "string"
+              },
+              "resourceScope" : {
+                "$ref" : "#/components/schemas/ResourceScope"
+              },
+              "resourceType" : {
+                "type" : "string"
+              },
+              "resourceAttributes" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string"
+                }
+              },
+              "resourceIdentifier" : {
+                "type" : "string"
+              },
+              "permitted" : {
+                "type" : "boolean"
+              }
+            }
+          },
+          "Principal" : {
+            "type" : "object",
+            "properties" : {
+              "scopeLevel" : {
+                "type" : "string"
+              },
+              "identifier" : {
+                "type" : "string"
+              },
+              "type" : {
+                "type" : "string",
+                "description" : "Principal Type in Harness",
+                "enum" : [ "USER", "USER_GROUP", "SERVICE_ACCOUNT" ]
+              },
+              "uniqueId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "ResourceScope" : {
+            "type" : "object",
+            "properties" : {
+              "accountIdentifier" : {
+                "type" : "string"
+              },
+              "orgIdentifier" : {
+                "type" : "string"
+              },
+              "projectIdentifier" : {
+                "type" : "string"
+              }
+            }
+          },
+          "ResponseDTOAccessCheckResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/AccessCheckResponse"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "AccessCheckRequest" : {
+            "required" : [ "permissions" ],
+            "type" : "object",
+            "properties" : {
+              "permissions" : {
+                "maxItems" : 10000,
+                "minItems" : 0,
+                "type" : "array",
+                "description" : "List of permission checks to perform",
+                "items" : {
+                  "$ref" : "#/components/schemas/PermissionCheck"
+                }
+              },
+              "principal" : {
+                "$ref" : "#/components/schemas/Principal"
+              }
+            }
+          },
+          "PermissionCheck" : {
+            "required" : [ "permission", "resourceType" ],
+            "type" : "object",
+            "properties" : {
+              "resourceScope" : {
+                "$ref" : "#/components/schemas/ResourceScope"
+              },
+              "resourceType" : {
+                "type" : "string"
+              },
+              "resourceAttributes" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string"
+                }
+              },
+              "resourceIdentifier" : {
+                "type" : "string"
+              },
+              "permission" : {
+                "type" : "string"
+              }
+            }
+          },
+          "Permission" : {
+            "required" : [ "action", "identifier", "name", "resourceType" ],
+            "type" : "object",
+            "properties" : {
+              "identifier" : {
+                "type" : "string"
+              },
+              "name" : {
+                "type" : "string"
+              },
+              "status" : {
+                "type" : "string",
+                "enum" : [ "STAGING", "EXPERIMENTAL", "ACTIVE", "DEPRECATED", "INACTIVE" ]
+              },
+              "includeInAllRoles" : {
+                "type" : "boolean"
+              },
+              "allowedScopeLevels" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "resourceType" : {
+                "type" : "string"
+              },
+              "action" : {
+                "type" : "string"
+              }
+            }
+          },
+          "PermissionResponse" : {
+            "required" : [ "permission" ],
+            "type" : "object",
+            "properties" : {
+              "permission" : {
+                "$ref" : "#/components/schemas/Permission"
+              }
+            }
+          },
+          "ResponseDTOListPermissionResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/PermissionResponse"
+                }
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "ResponseDTOSetString" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "AccessDeniedError" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "code" : {
+                "type" : "string",
+                "enum" : [ "DEFAULT_ERROR_CODE", "INVALID_ARGUMENT", "INVALID_EMAIL", "DOMAIN_NOT_ALLOWED_TO_REGISTER", "COMMNITY_EDITION_NOT_FOUND", "DEPLOY_MODE_IS_NOT_ON_PREM", "USER_ALREADY_REGISTERED", "USER_INVITATION_DOES_NOT_EXIST", "USER_DOES_NOT_EXIST", "USER_INVITE_OPERATION_FAILED", "USER_DISABLED", "ACCOUNT_DOES_NOT_EXIST", "INACTIVE_ACCOUNT", "ACCOUNT_MIGRATED", "ACCOUNT_MIGRATED_TO_NEXT_GEN", "USER_DOMAIN_NOT_ALLOWED", "MAX_FAILED_ATTEMPT_COUNT_EXCEEDED", "RESOURCE_NOT_FOUND", "INVALID_FORMAT", "ROLE_DOES_NOT_EXIST", "EMAIL_NOT_VERIFIED", "EMAIL_VERIFICATION_TOKEN_NOT_FOUND", "INVALID_TOKEN", "REVOKED_TOKEN", "INVALID_CAPTCHA_TOKEN", "NOT_ACCOUNT_MGR_NOR_HAS_ALL_APP_ACCESS", "EXPIRED_TOKEN", "INVALID_AGENT_MTLS_AUTHORITY", "TOKEN_ALREADY_REFRESHED_ONCE", "ACCESS_DENIED", "NG_ACCESS_DENIED", "INVALID_CREDENTIAL", "INVALID_CREDENTIALS_THIRD_PARTY", "INVALID_KEY", "INVALID_CONNECTOR_TYPE", "INVALID_KEYPATH", "INVALID_VARIABLE", "UNKNOWN_HOST", "UNREACHABLE_HOST", "INVALID_PORT", "SSH_SESSION_TIMEOUT", "ALGORITHM_NEGOTIATION_ERROR", "SOCKET_CONNECTION_ERROR", "CONNECTION_ERROR", "SOCKET_CONNECTION_TIMEOUT", "WINRM_COMMAND_EXECUTION_TIMEOUT", "CONNECTION_TIMEOUT", "SSH_CONNECTION_ERROR", "USER_GROUP_ERROR", "INVALID_EXECUTION_ID", "ERROR_IN_GETTING_CHANNEL_STREAMS", "UNEXPECTED", "UNKNOWN_ERROR", "UNKNOWN_EXECUTOR_TYPE_ERROR", "DUPLICATE_STATE_NAMES", "TRANSITION_NOT_LINKED", "TRANSITION_TO_INCORRECT_STATE", "TRANSITION_TYPE_NULL", "STATES_WITH_DUP_TRANSITIONS", "BARRIERS_NOT_RUNNING_CONCURRENTLY", "NON_FORK_STATES", "NON_REPEAT_STATES", "INITIAL_STATE_NOT_DEFINED", "FILE_INTEGRITY_CHECK_FAILED", "INVALID_URL", "FILE_DOWNLOAD_FAILED", "PLATFORM_SOFTWARE_DELETE_ERROR", "INVALID_CSV_FILE", "INVALID_REQUEST", "SCHEMA_VALIDATION_FAILED", "FILTER_CREATION_ERROR", "INVALID_YAML_ERROR", "PLAN_CREATION_ERROR", "INVALID_INFRA_STATE", "PIPELINE_ALREADY_TRIGGERED", "NON_EXISTING_PIPELINE", "DUPLICATE_COMMAND_NAMES", "INVALID_PIPELINE", "COMMAND_DOES_NOT_EXIST", "DUPLICATE_ARTIFACTSTREAM_NAMES", "DUPLICATE_HOST_NAMES", "STATE_NOT_FOR_TYPE", "STATE_MACHINE_ISSUE", "STATE_DISCONTINUE_FAILED", "STATE_PAUSE_FAILED", "PAUSE_ALL_ALREADY", "RESUME_ALL_ALREADY", "ROLLBACK_ALREADY", "ABORT_ALL_ALREADY", "EXPIRE_ALL_ALREADY", "RETRY_FAILED", "UNKNOWN_ARTIFACT_TYPE", "UNKNOWN_STAGE_ELEMENT_WRAPPER_TYPE", "INIT_TIMEOUT", "LICENSE_EXPIRED", "NOT_LICENSED", "REQUEST_TIMEOUT", "SCM_REQUEST_TIMEOUT", "WORKFLOW_ALREADY_TRIGGERED", "JENKINS_ERROR", "INVALID_ARTIFACT_SOURCE", "INVALID_ARTIFACT_SERVER", "INVALID_CLOUD_PROVIDER", "UPDATE_NOT_ALLOWED", "DELETE_NOT_ALLOWED", "APPDYNAMICS_CONFIGURATION_ERROR", "APM_CONFIGURATION_ERROR", "SPLUNK_CONFIGURATION_ERROR", "ELK_CONFIGURATION_ERROR", "LOGZ_CONFIGURATION_ERROR", "SUMO_CONFIGURATION_ERROR", "INSTANA_CONFIGURATION_ERROR", "APPDYNAMICS_ERROR", "STACKDRIVER_ERROR", "STACKDRIVER_CONFIGURATION_ERROR", "NEWRELIC_CONFIGURATION_ERROR", "NEWRELIC_ERROR", "DYNA_TRACE_CONFIGURATION_ERROR", "DYNA_TRACE_ERROR", "CLOUDWATCH_ERROR", "CLOUDWATCH_CONFIGURATION_ERROR", "PROMETHEUS_CONFIGURATION_ERROR", "DATA_DOG_CONFIGURATION_ERROR", "SERVICE_GUARD_CONFIGURATION_ERROR", "ENCRYPTION_NOT_CONFIGURED", "UNAVAILABLE_DELEGATES", "WORKFLOW_EXECUTION_IN_PROGRESS", "PIPELINE_EXECUTION_IN_PROGRESS", "AWS_ACCESS_DENIED", "AWS_CLUSTER_NOT_FOUND", "AWS_SERVICE_NOT_FOUND", "IMAGE_NOT_FOUND", "ILLEGAL_ARGUMENT", "IMAGE_TAG_NOT_FOUND", "DELEGATE_NOT_AVAILABLE", "INVALID_YAML_PAYLOAD", "AUTHENTICATION_ERROR", "AUTHORIZATION_ERROR", "UNRECOGNIZED_YAML_FIELDS", "COULD_NOT_MAP_BEFORE_YAML", "MISSING_BEFORE_YAML", "MISSING_YAML", "NON_EMPTY_DELETIONS", "GENERAL_YAML_ERROR", "GENERAL_YAML_INFO", "YAML_GIT_SYNC_ERROR", "GIT_CONNECTION_ERROR", "GIT_ERROR", "ARTIFACT_SERVER_ERROR", "ENCRYPT_DECRYPT_ERROR", "SECRET_MANAGEMENT_ERROR", "SECRET_NOT_FOUND", "KMS_OPERATION_ERROR", "GCP_KMS_OPERATION_ERROR", "VAULT_OPERATION_ERROR", "AWS_SECRETS_MANAGER_OPERATION_ERROR", "AZURE_KEY_VAULT_OPERATION_ERROR", "AZURE_KEY_VAULT_INTERRUPT_ERROR", "UNSUPPORTED_OPERATION_EXCEPTION", "FEATURE_UNAVAILABLE", "GENERAL_ERROR", "BASELINE_CONFIGURATION_ERROR", "SAML_IDP_CONFIGURATION_NOT_AVAILABLE", "INVALID_AUTHENTICATION_MECHANISM", "INVALID_SAML_CONFIGURATION", "INVALID_OAUTH_CONFIGURATION", "INVALID_LDAP_CONFIGURATION", "USER_GROUP_SYNC_FAILURE", "USER_GROUP_ALREADY_EXIST", "INVALID_TWO_FACTOR_AUTHENTICATION_CONFIGURATION", "EXPLANATION", "HINT", "NOT_WHITELISTED_IP", "INVALID_TOTP_TOKEN", "EMAIL_FAILED", "SSL_HANDSHAKE_FAILED", "NO_APPS_ASSIGNED", "INVALID_INFRA_CONFIGURATION", "TEMPLATES_LINKED", "USER_HAS_NO_PERMISSIONS", "USER_NOT_AUTHORIZED", "USER_ALREADY_PRESENT", "EMAIL_ERROR", "INVALID_USAGE_RESTRICTION", "USAGE_RESTRICTION_ERROR", "STATE_EXECUTION_INSTANCE_NOT_FOUND", "DELEGATE_TASK_RETRY", "KUBERNETES_API_TASK_EXCEPTION", "KUBERNETES_TASK_EXCEPTION", "KUBERNETES_YAML_ERROR", "SAVE_FILE_INTO_GCP_STORAGE_FAILED", "READ_FILE_FROM_GCP_STORAGE_FAILED", "FILE_NOT_FOUND_ERROR", "USAGE_LIMITS_EXCEEDED", "EVENT_PUBLISH_FAILED", "CUSTOM_APPROVAL_ERROR", "JIRA_ERROR", "EXPRESSION_EVALUATION_FAILED", "KUBERNETES_VALUES_ERROR", "KUBERNETES_CLUSTER_ERROR", "INCORRECT_SIGN_IN_MECHANISM", "OAUTH_LOGIN_FAILED", "INVALID_TERRAFORM_TARGETS_REQUEST", "TERRAFORM_EXECUTION_ERROR", "FILE_READ_FAILED", "FILE_SIZE_EXCEEDS_LIMIT", "CLUSTER_NOT_FOUND", "MARKETPLACE_TOKEN_NOT_FOUND", "INVALID_MARKETPLACE_TOKEN", "INVALID_TICKETING_SERVER", "SERVICENOW_ERROR", "PASSWORD_EXPIRED", "USER_LOCKED", "PASSWORD_STRENGTH_CHECK_FAILED", "ACCOUNT_DISABLED", "INVALID_ACCOUNT_PERMISSION", "PAGERDUTY_ERROR", "HEALTH_ERROR", "SAML_TEST_SUCCESS_MECHANISM_NOT_ENABLED", "DOMAIN_WHITELIST_FILTER_CHECK_FAILED", "INVALID_DASHBOARD_UPDATE_REQUEST", "DUPLICATE_FIELD", "INVALID_AZURE_VAULT_CONFIGURATION", "USER_NOT_AUTHORIZED_DUE_TO_USAGE_RESTRICTIONS", "INVALID_ROLLBACK", "DATA_COLLECTION_ERROR", "SUMO_DATA_COLLECTION_ERROR", "DEPLOYMENT_GOVERNANCE_ERROR", "BATCH_PROCESSING_ERROR", "GRAPHQL_ERROR", "FILE_CREATE_ERROR", "ILLEGAL_STATE", "GIT_DIFF_COMMIT_NOT_IN_ORDER", "FAILED_TO_ACQUIRE_PERSISTENT_LOCK", "FAILED_TO_ACQUIRE_NON_PERSISTENT_LOCK", "POD_NOT_FOUND_ERROR", "COMMAND_EXECUTION_ERROR", "REGISTRY_EXCEPTION", "ENGINE_INTERRUPT_PROCESSING_EXCEPTION", "ENGINE_IO_EXCEPTION", "ENGINE_OUTCOME_EXCEPTION", "ENGINE_SWEEPING_OUTPUT_EXCEPTION", "CACHE_NOT_FOUND_EXCEPTION", "ENGINE_ENTITY_UPDATE_EXCEPTION", "SHELL_EXECUTION_EXCEPTION", "TEMPLATE_NOT_FOUND", "AZURE_SERVICE_EXCEPTION", "AZURE_CLIENT_EXCEPTION", "GIT_UNSEEN_REMOTE_HEAD_COMMIT", "TIMEOUT_ENGINE_EXCEPTION", "NO_AVAILABLE_DELEGATES", "NO_GLOBAL_DELEGATE_ACCOUNT", "NO_INSTALLED_DELEGATES", "DUPLICATE_DELEGATE_EXCEPTION", "GCP_MARKETPLACE_EXCEPTION", "MISSING_DEFAULT_GOOGLE_CREDENTIALS", "INCORRECT_DEFAULT_GOOGLE_CREDENTIALS", "OPTIMISTIC_LOCKING_EXCEPTION", "NG_PIPELINE_EXECUTION_EXCEPTION", "NG_PIPELINE_CREATE_EXCEPTION", "RESOURCE_NOT_FOUND_EXCEPTION", "PMS_INITIALIZE_SDK_EXCEPTION", "UNEXPECTED_SNIPPET_EXCEPTION", "UNEXPECTED_SCHEMA_EXCEPTION", "CONNECTOR_VALIDATION_EXCEPTION", "TIMESCALE_NOT_AVAILABLE", "MIGRATION_EXCEPTION", "REQUEST_PROCESSING_INTERRUPTED", "SECRET_MANAGER_ID_NOT_FOUND", "GCP_SECRET_MANAGER_OPERATION_ERROR", "GCP_SECRET_OPERATION_ERROR", "GIT_OPERATION_ERROR", "TASK_FAILURE_ERROR", "INSTANCE_STATS_PROCESS_ERROR", "INSTANCE_STATS_MIGRATION_ERROR", "DEPLOYMENT_MIGRATION_ERROR", "CG_LICENSE_USAGE_ERROR", "INSTANCE_STATS_AGGREGATION_ERROR", "UNRESOLVED_EXPRESSIONS_ERROR", "KRYO_HANDLER_NOT_FOUND_ERROR", "DELEGATE_ERROR_HANDLER_EXCEPTION", "DELEGATE_SERVICE_DRIVER_EXCEPTION", "DELEGATE_INSTALLATION_COMMAND_NOT_SUPPORTED_EXCEPTION", "UNEXPECTED_TYPE_ERROR", "EXCEPTION_HANDLER_NOT_FOUND", "CONNECTOR_NOT_FOUND_EXCEPTION", "GCP_SERVER_ERROR", "HTTP_RESPONSE_EXCEPTION", "SCM_NOT_FOUND_ERROR", "SCM_CONFLICT_ERROR", "SCM_CONFLICT_ERROR_V2", "SCM_UNPROCESSABLE_ENTITY", "PROCESS_EXECUTION_EXCEPTION", "SCM_UNAUTHORIZED", "SCM_BAD_REQUEST", "SCM_INTERNAL_SERVER_ERROR", "DATA", "CONTEXT", "PR_CREATION_ERROR", "URL_NOT_REACHABLE", "URL_NOT_PROVIDED", "ENGINE_EXPRESSION_EVALUATION_ERROR", "ENGINE_FUNCTOR_ERROR", "JIRA_CLIENT_ERROR", "SCM_NOT_MODIFIED", "APPROVAL_STEP_NG_ERROR", "BUCKET_SERVER_ERROR", "GIT_SYNC_ERROR", "TEMPLATE_EXCEPTION", "TEMPLATE_ALREADY_EXISTS_EXCEPTION", "ENTITY_REFERENCE_EXCEPTION", "ACTIVE_SERVICE_INSTANCES_PRESENT_EXCEPTION", "INVALID_INPUT_SET", "INVALID_OVERLAY_INPUT_SET", "RESOURCE_ALREADY_EXISTS", "INVALID_JSON_PAYLOAD", "POLICY_EVALUATION_FAILURE", "POLICY_SET_ERROR", "INVALID_ARTIFACTORY_REGISTRY_REQUEST", "INVALID_NEXUS_REGISTRY_REQUEST", "ENTITY_NOT_FOUND", "INVALID_AZURE_CONTAINER_REGISTRY_REQUEST", "AZURE_AUTHENTICATION_ERROR", "AZURE_CONFIG_ERROR", "DATA_PROCESSING_ERROR", "INVALID_AZURE_AKS_REQUEST", "AWS_IAM_ERROR", "AWS_CF_ERROR", "AWS_INSTANCE_ERROR", "AWS_VPC_ERROR", "AWS_TAG_ERROR", "AWS_ASG_ERROR", "AWS_LOAD_BALANCER_ERROR", "SCM_INTERNAL_SERVER_ERROR_V2", "SCM_FAILED_DEPENDENCY_ERROR", "SCM_UNAUTHORIZED_ERROR_V2", "TOO_MANY_REQUESTS", "INVALID_IDENTIFIER_REF", "SPOTINST_NULL_ERROR", "SPOTNIST_REST_EXCEPTION", "SCM_UNEXPECTED_ERROR", "DUPLICATE_FILE_IMPORT", "AZURE_APP_SERVICES_TASK_EXCEPTION", "AZURE_ARM_TASK_EXCEPTION", "AZURE_BP_TASK_EXCEPTION", "MEDIA_NOT_SUPPORTED", "AWS_ECS_ERROR", "AWS_APPLICATION_AUTO_SCALING", "AWS_ECS_SERVICE_NOT_ACTIVE", "AWS_ECS_CLIENT_ERROR", "AWS_STS_ERROR", "FREEZE_EXCEPTION", "MISSING_EXCEPTION", "DELEGATE_TASK_EXPIRED", "DELEGATE_TASK_VALIDATION_FAILED", "MONGO_EXECUTION_TIMEOUT_EXCEPTION", "DELEGATE_NOT_REGISTERED", "TERRAFORM_VAULT_SECRET_CLEANUP_FAILURE", "APPROVAL_REJECTION", "TERRAGRUNT_EXECUTION_ERROR", "ADFS_ERROR", "TERRAFORM_CLOUD_ERROR", "CLUSTER_CREDENTIALS_NOT_FOUND", "SCM_API_ERROR", "INTERNAL_SERVER_ERROR", "SCM_FORBIDDEN", "AWS_EKS_ERROR", "OPA_POLICY_EVALUATION_ERROR", "USER_MARKED_FAILURE", "SSH_RETRY", "HTTP_CLIENT_ERROR_RESPONSE", "HTTP_INTERNAL_SERVER_ERROR", "HTTP_BAD_GATEWAY", "HTTP_SERVICE_UNAVAILABLE", "HTTP_GATEWAY_TIMEOUT", "HTTP_SERVER_ERROR_RESPONSE", "PIPELINE_UPDATE_EXCEPTION", "SERVICENOW_REFRESH_TOKEN_ERROR", "PARAMETER_FIELD_CAST_ERROR", "ABORT_ALL_ALREADY_NG", "WEBHOOK_EXCEPTION", "INVALID_OIDC_CONFIGURATION", "INVALID_CREDENTIALS", "INVALID_OR_PRIVATE_REPO", "BARRIER_FAILED_ERROR", "ELASTICSEARCH_NOT_AVAILABLE", "OBJECT_STORE_NOT_AVAILABLE" ]
+              },
+              "message" : {
+                "type" : "string"
+              },
+              "correlationId" : {
+                "type" : "string"
+              },
+              "detailedMessage" : {
+                "type" : "string"
+              },
+              "responseMessages" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/ResponseMessage"
+                }
+              },
+              "metadata" : {
+                "$ref" : "#/components/schemas/ErrorMetadata"
+              },
+              "failedPermissionChecks" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/PermissionCheck"
+                }
+              }
+            }
+          },
+          "ResponseDTORoleAssignmentDeleteResponseDTO" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/RoleAssignmentDeleteResponseDTO"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "RoleAssignmentDeleteResponseDTO" : {
+            "type" : "object",
+            "properties" : {
+              "successfullyDeleted" : {
+                "type" : "integer",
+                "description" : "Number of roleassignings that are successfully deleted.",
+                "format" : "int32"
+              },
+              "failedToDelete" : {
+                "type" : "integer",
+                "description" : "Number of roleassignings that are not deleted",
+                "format" : "int32"
+              },
+              "roleAssignmentErrorResponseDTOList" : {
+                "type" : "array",
+                "description" : "List of roleassignments along with error message that are not deleted.",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleAssignmentErrorResponseDTO"
+                }
+              }
+            }
+          },
+          "RoleAssignmentErrorResponseDTO" : {
+            "type" : "object",
+            "properties" : {
+              "roleAssignmentId" : {
+                "type" : "string",
+                "description" : "Identifier of roleassignment that is not deleted."
+              },
+              "errorMessage" : {
+                "type" : "string",
+                "description" : "Error message due to which roleassignment cannot be deleted."
+              }
+            },
+            "description" : "List of roleassignments along with error message that are not deleted."
+          },
+          "ResponseDTOListRoleAssignmentResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleAssignmentResponse"
+                }
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "RoleAssignment" : {
+            "required" : [ "principal", "resourceGroupIdentifier", "roleIdentifier" ],
+            "type" : "object",
+            "properties" : {
+              "identifier" : {
+                "type" : "string"
+              },
+              "resourceGroupIdentifier" : {
+                "type" : "string"
+              },
+              "roleIdentifier" : {
+                "type" : "string"
+              },
+              "roleReference" : {
+                "$ref" : "#/components/schemas/RoleReference"
+              },
+              "principal" : {
+                "$ref" : "#/components/schemas/Principal"
+              },
+              "disabled" : {
+                "type" : "boolean"
+              },
+              "managed" : {
+                "type" : "boolean"
+              },
+              "internal" : {
+                "type" : "boolean"
+              }
+            },
+            "description" : "Role Assignment to validate"
+          },
+          "RoleAssignmentResponse" : {
+            "type" : "object",
+            "properties" : {
+              "roleAssignment" : {
+                "$ref" : "#/components/schemas/RoleAssignment"
+              },
+              "scope" : {
+                "$ref" : "#/components/schemas/Scope"
+              },
+              "createdAt" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "lastModifiedAt" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "harnessManaged" : {
+                "type" : "boolean"
+              }
+            }
+          },
+          "RoleReference" : {
+            "required" : [ "identifier", "scopeLevel" ],
+            "type" : "object",
+            "properties" : {
+              "identifier" : {
+                "type" : "string",
+                "description" : "Unique identifier of the role"
+              },
+              "scopeLevel" : {
+                "type" : "string",
+                "description" : "scope level of the role. Valid values are account, organization and project."
+              }
+            }
+          },
+          "Scope" : {
+            "type" : "object",
+            "properties" : {
+              "accountIdentifier" : {
+                "type" : "string",
+                "description" : "Account Identifier for the Entity."
+              },
+              "orgIdentifier" : {
+                "type" : "string",
+                "description" : "Organization Identifier for the Entity."
+              },
+              "projectIdentifier" : {
+                "type" : "string",
+                "description" : "Project Identifier for the Entity."
+              }
+            }
+          },
+          "RoleAssignmentCreateRequest" : {
+            "required" : [ "roleAssignments" ],
+            "type" : "object",
+            "properties" : {
+              "roleAssignments" : {
+                "maxItems" : 100,
+                "minItems" : 0,
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleAssignment"
+                }
+              }
+            }
+          },
+          "ResponseDTORoleAssignmentResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/RoleAssignmentResponse"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "PageResponseRoleAssignmentResponse" : {
+            "type" : "object",
+            "properties" : {
+              "totalPages" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "totalItems" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "pageItemCount" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "pageSize" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "content" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleAssignmentResponse"
+                }
+              },
+              "pageIndex" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "empty" : {
+                "type" : "boolean"
+              },
+              "pageToken" : {
+                "type" : "string"
+              }
+            }
+          },
+          "ResponseDTOPageResponseRoleAssignmentResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/PageResponseRoleAssignmentResponse"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "SortOrder" : {
+            "type" : "object",
+            "properties" : {
+              "fieldName" : {
+                "type" : "string"
+              },
+              "orderType" : {
+                "type" : "string",
+                "enum" : [ "ASC", "DESC" ]
+              }
+            }
+          },
+          "RoleAssignmentFilter" : {
+            "type" : "object",
+            "properties" : {
+              "resourceGroupFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on resource group identifiers",
+                "items" : {
+                  "type" : "string",
+                  "description" : "Filter role assignments based on resource group identifiers"
+                }
+              },
+              "roleFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on role identifiers",
+                "items" : {
+                  "type" : "string",
+                  "description" : "Filter role assignments based on role identifiers"
+                }
+              },
+              "roleReferenceFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on roles",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleReference"
+                }
+              },
+              "principalTypeFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on principal type",
+                "items" : {
+                  "type" : "string",
+                  "description" : "Principal Type in Harness",
+                  "enum" : [ "USER", "USER_GROUP", "SERVICE_ACCOUNT" ]
+                }
+              },
+              "principalScopeLevelFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on principal scope level",
+                "items" : {
+                  "type" : "string",
+                  "description" : "Filter role assignments based on principal scope level"
+                }
+              },
+              "principalFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on principals",
+                "items" : {
+                  "$ref" : "#/components/schemas/Principal"
+                }
+              },
+              "harnessManagedFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on role assignments being harness managed",
+                "items" : {
+                  "type" : "boolean",
+                  "description" : "Filter role assignments based on role assignments being harness managed"
+                }
+              },
+              "disabledFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on whether they are enabled or disabled",
+                "items" : {
+                  "type" : "boolean",
+                  "description" : "Filter role assignments based on whether they are enabled or disabled"
+                }
+              }
+            }
+          },
+          "ResourceGroup" : {
+            "required" : [ "identifier", "name" ],
+            "type" : "object",
+            "properties" : {
+              "identifier" : {
+                "type" : "string"
+              },
+              "name" : {
+                "type" : "string"
+              }
+            }
+          },
+          "ResponseDTORoleAssignmentAggregateResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/RoleAssignmentAggregateResponse"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "Role" : {
+            "required" : [ "identifier", "name" ],
+            "type" : "object",
+            "properties" : {
+              "identifier" : {
+                "type" : "string",
+                "description" : "Unique identifier of the role"
+              },
+              "name" : {
+                "type" : "string",
+                "description" : "Name of the role"
+              },
+              "permissions" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "List of the permission identifiers (Subset of the list returned by GET /authz/api/permissions)",
+                "items" : {
+                  "type" : "string",
+                  "description" : "List of the permission identifiers (Subset of the list returned by GET /authz/api/permissions)"
+                }
+              },
+              "allowedScopeLevels" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "The scope levels at which this role can be used",
+                "items" : {
+                  "type" : "string",
+                  "description" : "The scope levels at which this role can be used",
+                  "enum" : [ "account", "organization", "project" ]
+                }
+              },
+              "description" : {
+                "type" : "string",
+                "description" : "Description of the role"
+              },
+              "tags" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string",
+                  "description" : "Tags"
+                },
+                "description" : "Tags"
+              }
+            }
+          },
+          "RoleAssignmentAggregateResponse" : {
+            "type" : "object",
+            "properties" : {
+              "roleAssignments" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleAssignment"
+                }
+              },
+              "scope" : {
+                "$ref" : "#/components/schemas/Scope"
+              },
+              "roles" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleResponse"
+                }
+              },
+              "resourceGroups" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/ResourceGroup"
+                }
+              }
+            }
+          },
+          "RoleResponse" : {
+            "required" : [ "role" ],
+            "type" : "object",
+            "properties" : {
+              "role" : {
+                "$ref" : "#/components/schemas/Role"
+              },
+              "scope" : {
+                "$ref" : "#/components/schemas/Scope"
+              },
+              "harnessManaged" : {
+                "type" : "boolean"
+              },
+              "createdAt" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "lastModifiedAt" : {
+                "type" : "integer",
+                "format" : "int64"
+              }
+            }
+          },
+          "AttributeFilter" : {
+            "type" : "object",
+            "properties" : {
+              "attributeName" : {
+                "type" : "string"
+              },
+              "attributeValues" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "Used to filter resources on their attributes"
+          },
+          "PageResponseRoleAssignmentAggregate" : {
+            "type" : "object",
+            "properties" : {
+              "totalPages" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "totalItems" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "pageItemCount" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "pageSize" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "content" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleAssignmentAggregate"
+                }
+              },
+              "pageIndex" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "empty" : {
+                "type" : "boolean"
+              },
+              "pageToken" : {
+                "type" : "string"
+              }
+            }
+          },
+          "PrincipalV2" : {
+            "type" : "object",
+            "properties" : {
+              "scopeLevel" : {
+                "type" : "string"
+              },
+              "identifier" : {
+                "type" : "string"
+              },
+              "name" : {
+                "type" : "string"
+              },
+              "email" : {
+                "type" : "string"
+              },
+              "type" : {
+                "type" : "string",
+                "description" : "Principal Type in Harness",
+                "enum" : [ "USER", "USER_GROUP", "SERVICE_ACCOUNT" ]
+              }
+            }
+          },
+          "ResourceFilter" : {
+            "type" : "object",
+            "properties" : {
+              "resources" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/ResourceSelectorV2"
+                }
+              },
+              "includeAllResources" : {
+                "type" : "boolean"
+              }
+            },
+            "description" : "Contains resource filter for a resource group"
+          },
+          "ResourceGroupV2" : {
+            "required" : [ "accountIdentifier", "identifier", "name" ],
+            "type" : "object",
+            "properties" : {
+              "accountIdentifier" : {
+                "type" : "string"
+              },
+              "orgIdentifier" : {
+                "type" : "string"
+              },
+              "projectIdentifier" : {
+                "type" : "string"
+              },
+              "identifier" : {
+                "maxLength" : 128,
+                "minLength" : 0,
+                "type" : "string"
+              },
+              "name" : {
+                "maxLength" : 128,
+                "minLength" : 0,
+                "type" : "string"
+              },
+              "color" : {
+                "type" : "string"
+              },
+              "tags" : {
+                "type" : "object",
+                "additionalProperties" : {
+                  "type" : "string"
+                }
+              },
+              "description" : {
+                "maxLength" : 1024,
+                "minLength" : 0,
+                "type" : "string"
+              },
+              "allowedScopeLevels" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "includedScopes" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/ScopeSelector"
+                }
+              },
+              "resourceFilter" : {
+                "$ref" : "#/components/schemas/ResourceFilter"
+              }
+            },
+            "description" : "Contains information of Resource Group"
+          },
+          "ResourceSelectorV2" : {
+            "required" : [ "resourceType" ],
+            "type" : "object",
+            "properties" : {
+              "resourceType" : {
+                "type" : "string"
+              },
+              "identifiers" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "attributeFilter" : {
+                "$ref" : "#/components/schemas/AttributeFilter"
+              }
+            },
+            "description" : "Used to specify resources in resource group"
+          },
+          "ResponseDTOPageResponseRoleAssignmentAggregate" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/PageResponseRoleAssignmentAggregate"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "RoleAssignmentAggregate" : {
+            "type" : "object",
+            "properties" : {
+              "identifier" : {
+                "type" : "string"
+              },
+              "principal" : {
+                "$ref" : "#/components/schemas/PrincipalV2"
+              },
+              "disabled" : {
+                "type" : "boolean"
+              },
+              "role" : {
+                "$ref" : "#/components/schemas/RoleResponse"
+              },
+              "resourceGroup" : {
+                "$ref" : "#/components/schemas/ResourceGroupV2"
+              },
+              "scope" : {
+                "$ref" : "#/components/schemas/ScopeResponse"
+              },
+              "createdAt" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "lastModifiedAt" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "harnessManaged" : {
+                "type" : "boolean"
+              }
+            }
+          },
+          "ScopeResponse" : {
+            "type" : "object",
+            "properties" : {
+              "accountIdentifier" : {
+                "type" : "string"
+              },
+              "accountName" : {
+                "type" : "string"
+              },
+              "orgIdentifier" : {
+                "type" : "string"
+              },
+              "orgName" : {
+                "type" : "string"
+              },
+              "projectIdentifier" : {
+                "type" : "string"
+              },
+              "projectName" : {
+                "type" : "string"
+              }
+            }
+          },
+          "ScopeSelector" : {
+            "required" : [ "filter" ],
+            "type" : "object",
+            "properties" : {
+              "filter" : {
+                "type" : "string",
+                "enum" : [ "EXCLUDING_CHILD_SCOPES", "INCLUDING_CHILD_SCOPES" ]
+              },
+              "accountIdentifier" : {
+                "type" : "string"
+              },
+              "orgIdentifier" : {
+                "type" : "string"
+              },
+              "projectIdentifier" : {
+                "type" : "string"
+              }
+            },
+            "description" : "Contains information of scope to which resource filter is applied"
+          },
+          "RoleAssignmentFilterV2" : {
+            "type" : "object",
+            "properties" : {
+              "resourceGroupFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on resource group identifiers",
+                "items" : {
+                  "type" : "string",
+                  "description" : "Filter role assignments based on resource group identifiers"
+                }
+              },
+              "roleFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on role identifiers",
+                "items" : {
+                  "type" : "string",
+                  "description" : "Filter role assignments based on role identifiers"
+                }
+              },
+              "roleReferenceFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on roles",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleReference"
+                }
+              },
+              "scopeFilters" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on scope filters",
+                "items" : {
+                  "$ref" : "#/components/schemas/ScopeSelector"
+                }
+              },
+              "principalFilter" : {
+                "$ref" : "#/components/schemas/Principal"
+              },
+              "harnessManagedFilter" : {
+                "type" : "boolean",
+                "description" : "Filter role assignments based on role assignments being harness managed"
+              },
+              "disabledFilter" : {
+                "type" : "boolean",
+                "description" : "Filter role assignments based on whether they are enabled or disabled"
+              },
+              "principalTypeFilter" : {
+                "uniqueItems" : true,
+                "type" : "array",
+                "description" : "Filter role assignments based on principal type",
+                "items" : {
+                  "type" : "string",
+                  "description" : "Principal Type in Harness",
+                  "enum" : [ "USER", "USER_GROUP", "SERVICE_ACCOUNT" ]
+                }
+              }
+            }
+          },
+          "ResponseDTORoleAssignmentValidationResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/RoleAssignmentValidationResponse"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "RoleAssignmentValidationResponse" : {
+            "type" : "object",
+            "properties" : {
+              "principalValidationResult" : {
+                "$ref" : "#/components/schemas/ValidationResult"
+              },
+              "roleValidationResult" : {
+                "$ref" : "#/components/schemas/ValidationResult"
+              },
+              "resourceGroupValidationResult" : {
+                "$ref" : "#/components/schemas/ValidationResult"
+              }
+            }
+          },
+          "ValidationResult" : {
+            "type" : "object",
+            "properties" : {
+              "isValid" : {
+                "type" : "boolean",
+                "writeOnly" : true
+              },
+              "errorMessage" : {
+                "type" : "string"
+              },
+              "valid" : {
+                "type" : "boolean"
+              }
+            }
+          },
+          "RoleAssignmentValidationRequest" : {
+            "required" : [ "roleAssignment" ],
+            "type" : "object",
+            "properties" : {
+              "roleAssignment" : {
+                "$ref" : "#/components/schemas/RoleAssignment"
+              },
+              "validatePrincipal" : {
+                "type" : "boolean",
+                "description" : "Set it to true if the principal needs to be validated"
+              },
+              "validateRole" : {
+                "type" : "boolean",
+                "description" : "Set it to true if the role needs to be validated"
+              },
+              "validateResourceGroup" : {
+                "type" : "boolean",
+                "description" : "Set it to true if the resource group needs to be validated"
+              }
+            }
+          },
+          "ResponseDTORoleResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/RoleResponse"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "PageResponseRoleWithPrincipalCountResponse" : {
+            "type" : "object",
+            "properties" : {
+              "totalPages" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "totalItems" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "pageItemCount" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "pageSize" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "content" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/RoleWithPrincipalCountResponse"
+                }
+              },
+              "pageIndex" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "empty" : {
+                "type" : "boolean"
+              },
+              "pageToken" : {
+                "type" : "string"
+              }
+            }
+          },
+          "ResponseDTOPageResponseRoleWithPrincipalCountResponse" : {
+            "type" : "object",
+            "properties" : {
+              "status" : {
+                "type" : "string",
+                "enum" : [ "SUCCESS", "FAILURE", "ERROR" ]
+              },
+              "data" : {
+                "$ref" : "#/components/schemas/PageResponseRoleWithPrincipalCountResponse"
+              },
+              "metaData" : {
+                "type" : "object"
+              },
+              "correlationId" : {
+                "type" : "string"
+              }
+            }
+          },
+          "RoleWithPrincipalCountResponse" : {
+            "required" : [ "role" ],
+            "type" : "object",
+            "properties" : {
+              "role" : {
+                "$ref" : "#/components/schemas/Role"
+              },
+              "scope" : {
+                "$ref" : "#/components/schemas/Scope"
+              },
+              "harnessManaged" : {
+                "type" : "boolean"
+              },
+              "createdAt" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "lastModifiedAt" : {
+                "type" : "integer",
+                "format" : "int64"
+              },
+              "roleAssignedToUserCount" : {
+                "type" : "integer",
+                "format" : "int32"
+              },
+              "roleAssignedToUserGroupCount" : {
+                "type" : "integer",
+                "format" : "int32"
+              },
+              "roleAssignedToServiceAccountCount" : {
+                "type" : "integer",
+                "format" : "int32"
+              }
+            }
+          }
+        }
+      }
+    }
+metadata:
+  description: The official Access control REST APIs
+  annotations:
+    backstage.io/source-location: url:https://qa.harness.io/ng/account/zEaak-FLS425IEO7OLzMUg/module/code/orgs/default/projects/IDP_TEST/repos/backstage-test/files/main/~/
