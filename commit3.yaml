@@ -1,0 +1,18 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: agniva-testing-docs
+name: agniva-testing-docs
+owner: group:team-a
+spec:
+  lifecycle: experimental
+metadata:
+  annotations:
+    pagerduty.com/service-id: PT5ED69
+    jira/project-key: IDP
+    backstage.io/techdocs-ref: dir:./
+    harness.io/sto-test-target:
+    - name: vigneswara-propelo/Employee-Management-System
+      variant: main
+      scope: account.default.IDP_Test
+    backstage.io/source-location: url:https://github.com/agnivabanerjeeharness/python-pipeline-samples/tree/main/
