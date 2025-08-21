@@ -11,3 +11,5 @@ metadata:
   description: Test Description
   tags:
   - java
+  - spotify
+  - mqtt
