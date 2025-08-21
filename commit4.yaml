@@ -1,0 +1,33 @@
+apiVersion: harness.io/v1
+kind: Component
+type: component
+identifier: aaca
+name: aaca
+owner: group:Test_IDP_Platform_Eng
+spec:
+  lifecycle: asc
+metadata:
+  org_identifier: Demo
+  description: ascsa
+  annotations:
+    harness.io/projects-stage: Operations,RELEASEBUILDS
+    harness.io/ci-pipelineIds: Docker_Image
+    harness.io/cd-serviceId-stage: idpadmin
+    harness.io/ci-pipelineIds-stage: IDPAdminBuildRelease,IDPAdminCutBranch
+    harness.io/project-url-stage: https://stage.harness.io/ng/account/wFHXHD0RRQWoO8tIZT5YVw/cd/orgs/Harness/projects/Operations/deployments
+    harness.io/pipelines: |
+      Build: https://stress.harness.io/ng/account/px7xd_BFRCi-pfWPYXVjvw/home/orgs/default/projects/idptestharness/pipelines/cipipelinetest_sto/pipeline-studio/?storeType=INLINE
+    backstage.io/kubernetes-label-selector: app=idp-admin-ui
+    github.com/project-slug: harness/idp-settings-ui
+    harness.io/cd-serviceId: idpadmin
+    pagerduty.com/service-id: PT5ED69
+    harness.io/services: |
+      cd: https://stress.harness.io/ng/account/px7xd_BFRCi-pfWPYXVjvw/cd/orgs/default/projects/idptestharness/services/testservice
+    jira/project-key: IDP
+    harness.io/project-url: https://app.harness.io/ng/account/vpCkHKsDSxK9_KYfjCTMKA/ci/orgs/default/projects/IDP_Settings_UI/dashboard
+    backstage.io/techdocs-ref: url:https://github.com/harness/idp-settings-ui/tree/techdocs
+  project_name: projectdemo2
+  org_name: Demo
+  project_identifier: projectdemo2
+  tags:
+  - mqtt
