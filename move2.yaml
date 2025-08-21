@@ -1,0 +1,12 @@
+apiVersion: harness.io/v1
+kind: API
+type: asyncapi
+identifier: agnivaaapi
+name: agnivaaAPI
+owner: group:Test_IDP_Platform_Eng
+spec:
+  lifecycle: experimental
+  definition: a
+metadata:
+  tags:
+  - java
