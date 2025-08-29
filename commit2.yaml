@@ -25,6 +25,9 @@ metadata:
     backstage.io/techdocs-ref: url:https://github.com/harness/harness-core/tree/techdocs-pl/access-control
     pagerduty.com/service-id: PLNZG2Y
     github.com/project-slug: harness/harness-core
+    jfrog.com/artifactory-group: Venkat-Test-BT-274
+    jfrog.com/artifactory-artifact: manifest-trigger/test-chart-1.1.1.tgz
+    jfrog.com/artifactory-repo: General
     backstage.io/source-location: url:https://github.com/harness/harness-core/tree/develop/access-control
   links:
   - title: repo
