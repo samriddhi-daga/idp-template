@@ -26,7 +26,7 @@ metadata:
     pagerduty.com/service-id: PLNZG2Y
     github.com/project-slug: harness/harness-core
     jfrog.com/artifactory-group: docker
-    jfrog.com/artifactory-artifact: backend_1.2.tgz
+    jfrog.com/artifactory-artifact: HarnessDemoWeb_v3.0.0.zip
     jfrog.com/artifactory-repo: artifactory
     backstage.io/source-location: url:https://github.com/harness/harness-core/tree/develop/access-control
   links:
