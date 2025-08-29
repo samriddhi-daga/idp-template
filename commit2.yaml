@@ -25,9 +25,8 @@ metadata:
     backstage.io/techdocs-ref: url:https://github.com/harness/harness-core/tree/techdocs-pl/access-control
     pagerduty.com/service-id: PLNZG2Y
     github.com/project-slug: harness/harness-core
-    jfrog.com/artifactory-group: docker
-    jfrog.com/artifactory-artifact: HarnessDemoWeb_v3.0.0.zip
-    jfrog.com/artifactory-repo: artifactory
+    jfrog.com/artifactory-artifact: docker-local/HarnessDemoWeb_v3.0.0.zip
+    jfrog.com/artifactory-repo: docker/HarnessDemoWeb_v3.0.0.zip
     backstage.io/source-location: url:https://github.com/harness/harness-core/tree/develop/access-control
   links:
   - title: repo
