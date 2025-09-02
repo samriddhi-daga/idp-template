@@ -1,0 +1,12 @@
+apiVersion: harness.io/v1
+kind: Component
+type: component
+identifier: test_sync_3
+name: Test Sync 3
+owner: user:account/samriddhi.daga+rbac@harness.io
+spec:
+  lifecycle: deprecated
+metadata:
+  tags:
+  - java
+  - mqtt
