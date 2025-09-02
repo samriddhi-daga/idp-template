@@ -1,0 +1,14 @@
+apiVersion: harness.io/v1
+kind: Group
+type: custom
+identifier: test_custom_group_gitx_new
+name: Test custom group GitX New
+spec:
+  parent: group:account/harness_blr
+  members:
+  - user:account/vigneswara.mh@harness.io
+  - user:account/jenil.jain@harness.io
+  - user:account/sandeepa.kv@harness.io
+metadata:
+  tags:
+  - user

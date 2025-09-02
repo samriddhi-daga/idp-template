@@ -1,0 +1,15 @@
+apiVersion: harness.io/v1
+kind: Group
+type: custom
+identifier: bugbash_test
+name: Bugbash test
+owner: ''
+spec:
+  lifecycle: ''
+  parent: group:account/auto_usergroup_001
+  members:
+  - user:account/samriddhi.daga+rbac@harness.io
+metadata:
+  tags:
+  - spotify
+  - mqtt
