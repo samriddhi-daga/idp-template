@@ -1,33 +1,34 @@
 apiVersion: harness.io/v1
 kind: Component
-type: component
-identifier: aaca
-name: aaca
-owner: group:Test_IDP_Platform_Eng
+type: service
+identifier: anomaly-detection
+name: anomaly-detection
+owner: group:account/ccmplayacc
 spec:
-  lifecycle: asc
+  lifecycle: production
+  dependsOn:
+  - component:ng-manager
 metadata:
-  org_identifier: Demo
-  description: ascsa
+  description: CCM anomaly detection backend service
   annotations:
     harness.io/projects-stage: Operations,RELEASEBUILDS
-    harness.io/ci-pipelineIds: Docker_Image
-    harness.io/cd-serviceId-stage: idpadmin
-    harness.io/ci-pipelineIds-stage: IDPAdminBuildRelease,IDPAdminCutBranch
+    harness.io/ci-pipelineIds: CEAnomalyDetectionUBIFeatureBuild
+    harness.io/cd-serviceId-stage: ce_anomaly_detection
+    harness.io/ci-pipelineIds-stage: CCMAnomalyDetection
     harness.io/project-url-stage: https://stage.harness.io/ng/account/wFHXHD0RRQWoO8tIZT5YVw/cd/orgs/Harness/projects/Operations/deployments
-    harness.io/pipelines: |
-      Build: https://stress.harness.io/ng/account/px7xd_BFRCi-pfWPYXVjvw/home/orgs/default/projects/idptestharness/pipelines/cipipelinetest_sto/pipeline-studio/?storeType=INLINE
-    backstage.io/kubernetes-label-selector: app=idp-admin-ui
-    github.com/project-slug: harness/idp-settings-ui
-    harness.io/cd-serviceId: idpadmin
-    pagerduty.com/service-id: PT5ED69
-    harness.io/services: |
-      cd: https://stress.harness.io/ng/account/px7xd_BFRCi-pfWPYXVjvw/cd/orgs/default/projects/idptestharness/services/testservice
-    jira/project-key: IDP
-    harness.io/project-url: https://app.harness.io/ng/account/vpCkHKsDSxK9_KYfjCTMKA/ci/orgs/default/projects/IDP_Settings_UI/dashboard
-    backstage.io/techdocs-ref: url:https://github.com/harness/idp-settings-ui/tree/techdocs
-  project_name: projectdemo2
-  org_name: Demo
-  project_identifier: projectdemo2
+    backstage.io/kubernetes-label-selector: app=anomaly-detection
+    github.com/project-slug: wings-software/ce-anomalyDetection
+    harness.io/cd-serviceId: ''
+    harness.io/projects: FEATUREBUILDS
+    pagerduty.com/service-id: PFVOX97
+    jira/project-key: CCM
+    harness.io/project-url: https://app.harness.io/ng/account/vpCkHKsDSxK9_KYfjCTMKA/ci/orgs/default/projects/FEATUREBUILDS/dashboard
+    backstage.io/source-location: url:https://github.com/wings-software/ce-anomalyDetection/tree/main
+  links:
+  - title: repo
+    url: https://github.com/wings-software/ce-anomalyDetection
+  harnessData:
+    qa_version: '1.5'
+    prod_version: '1.4'
   tags:
-  - mqtt
+  - python

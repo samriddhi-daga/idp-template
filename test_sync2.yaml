@@ -1,0 +1,12 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: test_sync_entity_2
+name: Test Sync Entity 2
+owner: user:account/samriddhi.daga@harness.io
+spec:
+  lifecycle: deprecated
+metadata:
+  tags:
+  - java
+  - rest

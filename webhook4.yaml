@@ -12,6 +12,6 @@ spec:
   - group:account/_account_all_users
   - user:account/samriddhi.daga+rbac@harness.io
 metadata:
+  description: bchjds
   tags:
   - my-sample-github
-  - gitsync
