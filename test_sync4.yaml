@@ -1,0 +1,11 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: test_sync_git_3
+name: Test Sync Git 3
+owner: user:account/shalini.agrawal@harness.io
+spec:
+  lifecycle: deprecated
+metadata:
+  tags:
+  - spotify
