@@ -2,7 +2,7 @@ apiVersion: harness.io/v1
 kind: API
 type: openapi
 identifier: accesscontrol-service
-name: accesscontrol-service
+name: ${{ values.name }}
 owner: group:account/plplayacc
 spec:
   lifecycle: production
