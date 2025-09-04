@@ -10,6 +10,7 @@ spec:
   - user:account/jenil.jain@harness.io
   - user:account/sandeepa.kv@harness.io
   - user:account/shalini.agrawal@harness.io
+  - rsimo@homnitachi.com
 metadata:
   tags:
   - user
