@@ -2,7 +2,7 @@ apiVersion: harness.io/v1
 kind: API
 type: openapi
 identifier: accesscontrol-service
-name: "${{ values.name }}"
+name: ${{ values.name }}
 owner: group:account/plplayacc
 spec:
   lifecycle: production
@@ -3439,3 +3439,6 @@ metadata:
   description: The official Access control REST APIs
   annotations:
     backstage.io/source-location: url:https://qa.harness.io/ng/account/zEaak-FLS425IEO7OLzMUg/module/code/orgs/default/projects/IDP_TEST/repos/backstage-test/files/main/~/
+  tags:
+  - bn
+  - spotify
