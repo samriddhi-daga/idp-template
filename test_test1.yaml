@@ -1,0 +1,12 @@
+apiVersion: harness.io/v1
+kind: Component
+type: component
+identifier: test_test_sync
+name: test test sync
+owner: user:account/timothy.davis@harness.io
+spec:
+  lifecycle: production
+metadata:
+  tags:
+  - bn
+  - java
