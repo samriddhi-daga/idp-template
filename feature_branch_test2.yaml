@@ -1,0 +1,11 @@
+apiVersion: harness.io/v1
+kind: Component
+type: website
+identifier: test_bug_bash_feature_branch
+name: test bug bash feature branch
+owner: user:account/timothy.davis@harness.io
+spec:
+  lifecycle: production
+metadata:
+  tags:
+  - bn
