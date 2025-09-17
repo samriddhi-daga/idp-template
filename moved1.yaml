@@ -3,12 +3,12 @@ kind: Component
 type: component
 identifier: account_level_fix
 name: 'account level fix '
-owner: group:Test_IDP_Platform_Eng
+owner: group:account/Test_IDP_Platform_Eng
 spec:
   lifecycle: experimental
+  ownedBy:
+  - group:account/Test_IDP_Platform_Eng
 metadata:
   description: 'account level fix '
   tags:
   - java
-  - rest
-  - mqtt
