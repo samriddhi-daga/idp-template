@@ -1,0 +1,12 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: test_feature_branch_fallback
+name: Test feature branch fallback
+owner: user:account/samriddhi.daga@harness.io
+spec:
+  lifecycle: deprecated
+metadata:
+  tags:
+  - bn
+  - spotify
