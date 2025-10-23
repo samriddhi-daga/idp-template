@@ -1,0 +1,47 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: dummy-test
+  title: Show Output Varaibles
+  description: Hello World
+    - nextjs
+    - react
+    - javascript
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+spec:
+  owner: user:default/bhavya.sinha
+  type: service
+  parameters:
+    - title: Pipeline Details
+      properties:
+        token:
+          title: Harness Token
+          type: string
+          ui:widget: password
+          ui:field: HarnessAuthToken
+        slack_id:
+          title: Name of your slack ID
+          type: string
+          description: Give the slack ID to which notifications would be sent 
+  steps:
+    - id: trigger
+      name: Running your Pipeline
+      action: trigger:harness-custom-pipeline
+      input:
+         url: 'https://qa.harness.io/ng/account/zEaak-FLS425IEO7OLzMUg/module/idp-admin/orgs/default/projects/IDPtest/pipelines/Demo_Pipeline/pipeline-studio?storeType=INLINE'
+         inputset:
+          slack_id: ${{ parameters.slack_id }}
+         apikey: ${{ parameters.token }}
+         showOutputVariables: true
+  output:
+    text:
+      - title: Output Variable 1
+        content: |
+              Value of **Output Variable 1** is `${{ steps.trigger.output.outputVar1 }}` 
+      - title: Output Variable 2
+        content: |
+          Value of **Output Variable 2** is `${{ steps.trigger.output['pipeline.stages.stage.spec.execution.steps.ShellScript_1.output.outputVariables.outputVar2'] }}`
+    links:
+      - title: Pipeline Details
+        url: ${{ steps.trigger.output.PipelineUrl }}
