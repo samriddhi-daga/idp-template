@@ -76,17 +76,6 @@ spec:
       action: abort
       errors:
       - Pipeline execution failed
-  - id: testab_pipeline
-    name: Run Pipeline
-    action: trigger:harness-custom-pipeline
-    input:
-      url: https://qa.harness.io/ng/account/zEaak-FLS425IEO7OLzMUg/all/orgs/default/projects/IDPtest/pipelines/Samriddhi_Test_1/pipeline-studio/?storeType=INLINE
-      inputset: {}
-      apikey: ${{ parameters.token }}
-    onFailure:
-      action: abort
-      errors:
-      - Pipeline execution failed
 metadata:
   description: A workflow that triggers two Harness pipelines in sequence
   tags:
