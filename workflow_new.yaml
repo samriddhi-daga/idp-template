@@ -2,7 +2,7 @@ apiVersion: harness.io/v1
 kind: Workflow
 type: service
 identifier: triggergroupedpipeline
-name: Dual Pipeline Workflow with Group
+name: Demo Workflow with Pipeline Group
 owner: user:account/samriddhi.daga@harness.io
 spec:
   output:
