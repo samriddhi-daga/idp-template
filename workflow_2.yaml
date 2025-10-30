@@ -1,0 +1,36 @@
+apiVersion: harness.io/v1
+kind: Workflow
+type: service
+identifier: pipelinefeaturebranch
+name: Demo Pipeline in Feature branch
+owner: user:account/samriddhi.daga@harness.io
+spec:
+  parameters:
+  - title: Service Information
+    required:
+    - token
+    properties:
+      token:
+        title: Harness Token
+        type: string
+        description: Authentication token for Harness API
+        ui:widget: password
+        ui:field: HarnessAuthToken
+  steps:
+  - id: test_pipeline
+    name: Run Step
+    action: trigger:harness-custom-pipeline
+    input:
+      url: https://qa.harness.io/ng/account/zEaak-FLS425IEO7OLzMUg/module/cd/orgs/default/projects/IDPtest/pipelines/Demo_Pipeline_Test/pipeline-studio/?storeType=INLINE
+      inputset: {}
+      apikey: ${{ parameters.token }}
+    onFailure:
+      action: abort
+      errors:
+      - Pipeline execution failed
+metadata:
+  description: A workflow that triggers two Harness pipelines in sequence
+  tags:
+  - test
+  - pipeline
+  - workflow
