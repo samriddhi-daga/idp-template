@@ -5,35 +5,6 @@ identifier: triggergroupedpipeline
 name: Dual Pipeline Workflow with Group
 owner: user:account/samriddhi.daga@harness.io
 spec:
-  output:
-    text:
-    - title: Pipeline Execution Summary
-      icon: description
-      content: "✅ Both pipelines executed successfully.  \n"
-    - title: Next Steps
-      icon: check_circle
-      content: "## 📊 Test Pipelines Report\n\nThe following pipelines were executed\
-        \ as part of this workflow run:\n\n### ✅ Test 1 Pipeline\n- Status: **Success**\
-        \  \n- Triggered automatically after code push  \n- Runs the **unit test suite**,\
-        \ **lint checks**, and **basic integration tests**  \n- Duration: ~5 minutes\
-        \  \n- Artifacts: Stored in the S3 bucket (`/builds/test1/`)  \n\n### ⚡ Test\
-        \ 2 Pipeline\n- Status: **Success**  \n- Includes **load testing** and **API\
-        \ contract validation**  \n- Duration: ~12 minutes  \n- Artifacts: Stored\
-        \ in the S3 bucket (`/builds/test2/`)  \n\n### 🔍 Observations\n- Both pipelines\
-        \ completed without errors  \n- Coverage remained stable at **85%**  \n- No\
-        \ flaky tests detected in this run  \n\n---\n👉 Use the links below to access\
-        \ full pipeline details and logs.\n"
-      default: true
-    links:
-    - title: Test 1 Pipeline Details
-      icon: link
-      url: ${{ steps.test_pipeline.output.PipelineUrl }}
-    - title: Test 2 Pipeline Details
-      icon: link
-      url: ${{ steps.testab_pipeline.output.PipelineUrl }}
-    - title: Catalog Details for triggermultiplepipelines
-      icon: link
-      entityRef: workflow:account/triggermultiplepipelines
   parameters:
   - title: Service Information
     required:
