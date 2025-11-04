@@ -23,7 +23,6 @@ spec:
         \ completed without errors  \n- Coverage remained stable at **85%**  \n- No\
         \ flaky tests detected in this run  \n\n---\n👉 Use the links below to access\
         \ full pipeline details and logs.\n"
-      default: true
     links:
     - title: Test 1 Pipeline Details
       icon: link
@@ -39,19 +38,6 @@ spec:
     required:
     - token
     properties:
-      service_name:
-        title: Service Name
-        type: string
-        description: Name of the service
-      environment:
-        title: Environment
-        type: string
-        description: Target environment for deployment
-      description:
-        title: Description
-        type: string
-        description: Description of the service
-        ui:widget: textarea
       token:
         title: Harness Token
         type: string
