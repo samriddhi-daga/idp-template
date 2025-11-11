@@ -10,7 +10,7 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
 spec:
-  owner: user:default/bhavya.sinha
+  owner: group:default/testusergroup
   type: service
   parameters:
     - title: Pipeline Details
