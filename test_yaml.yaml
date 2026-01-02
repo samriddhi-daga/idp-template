@@ -24,7 +24,7 @@ metadata:
     - **WebSite & API**:
       - A site should not host both API and Website together.
       - If the site is an API, include "api" in the URL/FQDN name. Example: www.pes-ip-api.shareable.com.
-    - For any queries or pipeline issues, kindly reach out to **PDLInfosecWAF@transunion.com**.
+    - For any queries or pipeline issues, kindly reach out to **PDLInfosecWAF@test.com**.
   tags:
     - cloudflare
     - netsec-devsecops
@@ -188,12 +188,12 @@ spec:
         requester_email:
           title: Requester Email
           type: string
-          pattern: ^([a-zA-Z0-9_.]{1,}(@transunion.com))$
+          pattern: ^([a-zA-Z0-9_.]{1,}(@test.com))$
         communication_pdl:
           title: Communication PDL
           type: string
           description: Email ID for team communication.
-          pattern: ^([a-zA-Z0-9_.]{1,}(@transunion.com))$
+          pattern: ^([a-zA-Z0-9_.]{1,}(@test.com))$
         business_owner:
           title: Business Owner
           type: string
@@ -208,8 +208,8 @@ spec:
             Provide application technical owner details (e.g., OneTru Foundations).
       errorMessage:
         properties:
-          requester_email: "Please enter a valid Email ID. eg. firstname_lastname@transunion.com"
-          communication_pdl: "Please enter a valid PDL. eg. **MY_TEAM_PDL@transunion.com"
+          requester_email: "Please enter a valid Email ID. eg. firstname_lastname@test.com"
+          communication_pdl: "Please enter a valid PDL. eg. **MY_TEAM_PDL@test.com"
 
     - title: Additional Information
       properties:
@@ -225,7 +225,7 @@ spec:
       name: Triggering WAF / Cloudflare Onboarding Pipeline
       action: trigger:harness-custom-pipeline
       input:
-        url: https://transunion.harness.io/ng/account/HgTKqISVTX-kQSVsWCHEcA/all/orgs/Information_Security/projects/NetSec_Automation_Framework/pipelines/waf_onboarding/pipeline-studio/?repoName=gcp-foundational-netsec-automation-test&connectorRef=&storeType=REMOTE&branch=develop
+        url: https://test.harness.io/ng/account/HgTKqISVTX-kQSVsWCHEcA/all/orgs/Information_Security/projects/NetSec_Automation_Framework/pipelines/waf_onboarding/pipeline-studio/?repoName=gcp-foundational-netsec-automation-test&connectorRef=&storeType=REMOTE&branch=develop
         inputset:
           domain_name: ${{ parameters.domain_name }}
           environment_type: ${{ parameters.environment_type }}
