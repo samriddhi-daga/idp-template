@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: wayback-search
+  description: Search of the wayback machine
+  annotations:
+    grafana/overview-dashboard: 'https://monitoring.harness.io/d/h-od1BDIz/idp-slis?orgId=1&kiosk'
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/samriddhitestusergroup
+  providesApis:
+    - wayback-search
+  consumesApis:
+    - wayback-archive
