@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: wayback-search
+  name: grafana-dashboard
   description: Search of the wayback machine
   annotations:
     grafana/overview-dashboard: 'https://monitoring.harness.io/d/h-od1BDIz/idp-slis?orgId=1&kiosk'
