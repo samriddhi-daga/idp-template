@@ -1,0 +1,10 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: ToDo_List_K8s_BG_Testqwerty
+name: access-control
+owner: unknown
+orgIdentifier: Migrator_Validation
+projectIdentifier: Harness_Sample_App
+spec:
+  lifecycle: unknown
