@@ -1,0 +1,29 @@
+apiVersion: harness.io/v1
+kind: Component
+type: service
+identifier: R_kgDOJVuBmg
+name: 47-hack-ui
+owner: unknown
+spec:
+  lifecycle: unknown
+metadata:
+  integration:
+    account:
+      dipengit-1uuzu5:
+        repo_details:
+          entity_uuid: 35519727-0124-5112-889e-60ceb4a1d606
+          entity_action: REGISTER
+  annotations:
+    github.com/project-slug: rootcircle/docfiller
+  integration_properties:
+    GitHub:
+      id: R_kgDOJVuBmg
+      languages:
+      - name: HTML
+        size: 1743
+      - name: JavaScript
+        size: 52552
+      name: 47-hack-ui
+      nameWithOwner: harness/47-hack-ui
+      primaryLanguageName: JavaScript
+      url: https://github.com/harness/47-hack-ui
