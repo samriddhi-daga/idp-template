@@ -8,3 +8,111 @@ orgIdentifier: Migrator_Validation
 projectIdentifier: Harness_Sample_App
 spec:
   lifecycle: unknown
+metadata:
+  integration:
+    account:
+      test-pagerduty-connector-ishan-1nza4n:
+        services:
+          entity_uuid: 733372e2-623e-5a11-a6e0-bd4d036374ba
+          entity_action: MERGE
+    account/default/IDP_K8s_Integration_Sanity:
+      sanity-6mf471:
+        service:
+          642d4b9741ee3c555d4e1a7f:
+            entity_action: MERGE
+            entity_uuid: f7c76b3b-e45f-51d2-a1da-a7eea2085637
+      sanity-2-b8myvs:
+        service:
+          68fb5ef85ee5407453790e40:
+            entity_action: MERGE
+            entity_uuid: 9b3d3214-b47d-54ad-8030-c4299891ead3
+    account/default/ishantestscope:
+      k8s-test-3rd-july-lrk54j:
+        service:
+          harness-delegate-ng:
+            entity_action: MERGE
+            entity_uuid: 54117091-2a10-582f-9a8d-fccbdb1c7922
+      wdkwdklw-n0xcg3:
+        service:
+          gmp-system:
+            entity_action: MERGE
+            entity_uuid: ad9c410b-5634-5204-970e-bbc1e4400097
+      demok8s-9caxgo:
+        service:
+          68fb5ef85ee5407453790e40:
+            entity_action: MERGE
+            entity_uuid: 34846adc-2499-5189-ab84-2f623a740ff9
+          69118c3946631f482ae9b066:
+            entity_action: MERGE
+            entity_uuid: 728da1ca-0dce-5d59-b1a6-1691573e39d2
+          680b212eba4fee4cd78f3dc3:
+            entity_action: MERGE
+            entity_uuid: fa03f9ad-4d82-53c0-b0bc-58410f3c9e30
+      testing-k8s-phase-2-omlxvt:
+        service:
+          642d4b9741ee3c555d4e1a7f:
+            entity_action: MERGE
+            entity_uuid: c27ded4a-51e6-5ade-abd6-03dee5bb7389
+      slow-376zy5:
+        service:
+          642d4b9741ee3c555d4e1a7f:
+            entity_action: MERGE
+            entity_uuid: b42c2b8e-b253-5dcd-8589-7a618492d8e1
+  service: backstage_plugin_catalog_backend
+  integration_properties:
+    PagerDuty:
+      analyticsMeanSecondsToFirstAck: 0
+      analyticsMeanSecondsToResolve: 0
+      analyticsTotalIncidents: 0
+      identifier: PR2H6JM
+      name: audit-event-streaming
+      onCallName:
+      - Marko Milic
+      - Shashank Singh
+      - Shivam Rajput
+      - Ankit Singhal
+      - Akshay Anand Khole
+      - Piyush Patel
+      - Sahiba Khan
+      - Nishant Saini
+      - Niyasha Jain
+      - Sergey Bobrov
+      - Jimit Gandhi
+      - Raghvendra Singh
+      - Naman Gupta
+      teams: []
+    HarnessK8s:
+      Env1:
+      - kind: Service
+        replicas: 2
+        namespace: 642d4b9741ee3c555d4e1a7f
+        name: idp-ui
+      - kind: Service
+        replicas: 2
+        namespace: 68fb5ef85ee5407453790e40
+        name: idp-ui
+      Prod:
+      - kind: Deployment
+        replicas: 1
+        namespace: harness-delegate-ng
+        name: idpk8sprodzero
+      - kind: Service
+        replicas: 2
+        namespace: gmp-system
+        name: frontend
+      - kind: Service
+        replicas: 2
+        namespace: 68fb5ef85ee5407453790e40
+        name: idp-ui
+      - kind: Service
+        replicas: 2
+        namespace: 69118c3946631f482ae9b066
+        name: idp-ui
+      - kind: Service
+        replicas: 2
+        namespace: 680b212eba4fee4cd78f3dc3
+        name: idp-ui
+      - kind: Service
+        replicas: 4
+        namespace: 642d4b9741ee3c555d4e1a7f
+        name: idp-ui
