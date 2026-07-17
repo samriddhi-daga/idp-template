@@ -58,6 +58,7 @@ metadata:
           642d4b9741ee3c555d4e1a7f:
             entity_action: MERGE
             entity_uuid: b42c2b8e-b253-5dcd-8589-7a618492d8e1
+  pagerdutySvcID: PP0WEJ1
   service: backstage_plugin_catalog_backend
   integration_properties:
     PagerDuty:
