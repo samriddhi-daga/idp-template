@@ -3,7 +3,7 @@ kind: Component
 type: service
 identifier: R_kgDOJVuBmg
 name: 47-hack-ui
-owner: unknown
+owner: group:account/CHG
 spec:
   lifecycle: unknown
 metadata:
