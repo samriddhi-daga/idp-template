@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: local-setup
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: local-setup
