@@ -1,0 +1,33 @@
+pipeline:
+  stages:
+    - steps:
+        - run:
+            script: <+input>
+          name: Run Input 1
+          id: Run_Input_1
+      name: IDP Workflow 3.0
+      id: IDP_Workflow_30
+    - name: Chain Child Pipeline
+      chain:
+        uses: default/IDP_TEST/Chain_Child_Pipeline
+        with:
+          inputs:
+            overlay:
+              stages:
+                - steps:
+                    - parallel:
+                        steps:
+                          - run:
+                              script: <+input>
+                            id: Parallel_Step_1
+                          - run:
+                              script: <+input>
+                            id: Parallel_Step_2
+                  id: Child_Pipeline
+      id: Chain_Child_Pipeline
+  inputs:
+    Test:
+      type: string
+      label: Pipeline Input
+      default: Hello
+      step: Parallel_Step_2
