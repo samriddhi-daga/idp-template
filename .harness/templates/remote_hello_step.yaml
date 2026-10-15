@@ -1,0 +1,8 @@
+version: 1
+template:
+  identifier: remote_hello_step
+  name: Remote Hello Step
+  description: Remote step template that prints Hello World from a non-main branch.
+  step:
+    run:
+      script: echo "Hello World from remote template"
