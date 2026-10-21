@@ -16,4 +16,4 @@ spec:
 metadata:
   tags:
   - spotify
-  - rest
+  - test
