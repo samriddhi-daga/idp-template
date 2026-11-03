@@ -1,0 +1,11 @@
+name: test_remot_input_set
+id: test_remot_input_set
+global: {}
+phases:
+  - id: deploy
+    activities: []
+    inputs:
+      version:
+        type: string
+      environment:
+        type: string
