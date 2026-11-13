@@ -21,9 +21,17 @@ process:
           fields:
             env:
               type: string
+            version:
+              type: string
           values:
             - env:
-                - test
+                - ncs
+              version:
+                - "cndsm "
+            - env:
+                - cas
+              version:
+                - acsxnm
     - phase:
         id: test
         name: test
