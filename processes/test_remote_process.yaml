@@ -17,6 +17,13 @@ process:
             name: test_pipeline_release
             description: test release
             depends-on: []
+        targets:
+          fields:
+            env:
+              type: string
+          values:
+            - env:
+                - test
     - phase:
         id: test
         name: test
