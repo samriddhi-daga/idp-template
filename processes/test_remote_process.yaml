@@ -17,21 +17,6 @@ process:
             name: test_pipeline_release
             description: test release
             depends-on: []
-        targets:
-          fields:
-            env:
-              type: string
-            version:
-              type: string
-          values:
-            - env:
-                - ncs
-              version:
-                - "cndsm "
-            - env:
-                - cas
-              version:
-                - acsxnm
     - phase:
         id: test
         name: test
