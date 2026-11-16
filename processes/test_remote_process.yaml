@@ -17,17 +17,6 @@ process:
             name: test_pipeline_release
             description: test release
             depends-on: []
-        targets:
-          fields:
-            test:
-              type: string
-            cjkasbca:
-              type: string
-          values:
-            - cjkasbca:
-                - cac
-              test:
-                - nbascnm
     - phase:
         id: test
         name: test
